@@ -96,8 +96,6 @@ class Input extends Component {
     const {
       type,
       placeholder,
-      onChange,
-      onBlur,
       value
     } = this.props
 
