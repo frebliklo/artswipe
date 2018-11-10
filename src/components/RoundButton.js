@@ -12,6 +12,15 @@ const RoundButton = styled.button`
   background: ${props => props.dislike ? theme.color.dislike : theme.color.like};
   color: ${theme.color.offWhite};
   box-shadow: 0 2px 6px ${theme.color.secondary};
+  transition: transform 150ms ease-in-out;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  &:active {
+    transform: scale(0.9);
+  }
 `
 
 export default RoundButton

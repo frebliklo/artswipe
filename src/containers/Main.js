@@ -28,21 +28,23 @@ const ButtonContainer = styled.div`
 class Main extends Component {
   state = {
     img: {
-      src: null,
       asset: null,
-      collection: null
+      collection: null,
+      title: null
     },
+    loading: true
   }
 
   componentDidMount() {
-    axios.get(`${API_BASE_URL}/culture`)
+    axios.get(`${API_BASE_URL}/culture?user=${this.props.user}`)
       .then(res => {
         this.setState(() => ({
           img: {
-            src: res.data.thumb,
             asset: res.data.asset,
-            collection: res.data.collection
-          }
+            collection: res.data.collection,
+            title: res.data.title
+          },
+          loading: false
         }))
       })
       .catch(err => console.log(err))
@@ -50,33 +52,37 @@ class Main extends Component {
 
   onClick = (user, choice) => {
     const { asset, collection } = this.state.img
-
     const url = `${API_BASE_URL}/choose?user=${user}&collection=${collection}&asset=${asset}&choice=${choice}`
+
+    this.setState(() => ({ loading: true }))
 
     axios.get(url)
       .then(res => {
         this.setState(() => ({
           img: {
-            src: res.data.thumb,
             asset: res.data.asset,
-            collection: res.data.collection
-          }
+            collection: res.data.collection,
+            title: res.data.title
+          },
+          loading: false
         }))
       })
       .catch(err => console.log(err))
   }
   
   render() {
-    const { src, collection } = this.state.img
+    const { img, loading } = this.state
+    const { asset, collection, title } = img
 
     return (
       <AuthContext.Consumer>
         {({ user }) => (
           <Container>
             <Image
-              src={src}
+              asset={asset}
               collection={collection}
-              loading={src ? false : true}
+              title={title}
+              loading={loading ? true : false}
             />
             <ButtonContainer>
               <RoundButton dislike onClick={() => this.onClick(user, false)}>

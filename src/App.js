@@ -28,7 +28,7 @@ class App extends Component {
   }
 
   render() {
-    const { isAuthenticated } = this.state
+    const { isAuthenticated, user } = this.state
 
     return (
       <AuthContext.Provider value={this.state}>
@@ -37,7 +37,7 @@ class App extends Component {
           <Screen>
             <Route path="/" exact component={Login} />
             <Route path="/login" component={Login} />
-            <PrivateRoute path="/swipe" component={Main} isAuthenticated={isAuthenticated} />
+            <PrivateRoute path="/swipe" component={() => <Main user={user} />} isAuthenticated={isAuthenticated} />
           </Screen>
         </Router>
       </AuthContext.Provider>
