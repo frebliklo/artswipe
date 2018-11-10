@@ -13,11 +13,19 @@ const Container = styled.div`
 const PosedPlaceholder = posed.p({
   empty: {
     fontSize: '1.6rem',
-    y: 0
+    y: 0,
+    transition: {
+      ease: 'anticipate',
+      duration: 200
+    }
   },
   value: {
     fontSize: '1.2rem',
-    y: -30
+    y: -30,
+    transition: {
+      ease: 'anticipate',
+      duration: 200
+    }
   }
 })
 
