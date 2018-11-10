@@ -5,6 +5,7 @@ import Login from './containers/Login'
 import Main from './containers/Main'
 import GlobalStyle from './components/GlobalStyle'
 import PrivateRoute from './components/PrivateRoute'
+import Screen from './components/Screen'
 
 class App extends Component {
   constructor(props) {
@@ -31,13 +32,13 @@ class App extends Component {
 
     return (
       <AuthContext.Provider value={this.state}>
+        <GlobalStyle />
         <Router>
-          <div>
-            <GlobalStyle />
+          <Screen>
             <Route path="/" exact component={Login} />
             <Route path="/login" component={Login} />
             <PrivateRoute path="/swipe" component={Main} isAuthenticated={isAuthenticated} />
-          </div>
+          </Screen>
         </Router>
       </AuthContext.Provider>
     )

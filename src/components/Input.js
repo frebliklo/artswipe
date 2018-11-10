@@ -5,7 +5,7 @@ import { theme } from '../constants'
 const InputField = styled.input`
   width: 100%;
   font-size: 1.6rem;
-  padding: .4rem 1.2rem;
+  padding: .8rem 1.2rem;
   border: none;
   border-radius: 4px;
   background: ${theme.color.offWhite};
