@@ -16,7 +16,7 @@ const PosedPlaceholder = posed.p({
     y: 0,
     transition: {
       ease: 'anticipate',
-      duration: 200
+      duration: 400
     }
   },
   value: {
@@ -24,7 +24,7 @@ const PosedPlaceholder = posed.p({
     y: -30,
     transition: {
       ease: 'anticipate',
-      duration: 200
+      duration: 400
     }
   }
 })
@@ -53,14 +53,24 @@ const InputField = styled.input`
 `
 
 class Input extends Component {
-  state = {
-    focused: false
+  constructor(props) {
+    super(props)
+
+    this.inputRef = React.createRef()
+
+    this.state = {
+      focused: false
+    }
   }
 
   componentDidMount() {
     if(this.props.value) {
       this.setState(() => ({ focused: true }))
     }
+  }
+
+  placeholderClick = () => {
+    this.inputRef.current.focus()
   }
 
   _onFocus = e => {
@@ -93,10 +103,14 @@ class Input extends Component {
 
     return (
       <Container>
-        <Placeholder pose={this.state.focused ? 'value' : 'empty'}>
+        <Placeholder 
+          pose={this.state.focused ? 'value' : 'empty'}
+          onClick={this.placeholderClick}
+        >
           {placeholder}
         </Placeholder>
         <InputField
+          ref={this.inputRef}
           type={type ? type : 'text'}
           onFocus={this._onFocus}
           onChange={this._onChange}

@@ -10,7 +10,8 @@ class Signup extends Component {
       <IntroContainer>
         <Title>Signup</Title>
         <Input
-          placeholder="Input username"
+          placeholder="Username"
+          onChange={e => console.log(e)}
         />
       </IntroContainer>
     )
