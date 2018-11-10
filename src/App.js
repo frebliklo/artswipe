@@ -1,28 +1,42 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
+import AuthContext from './context/AuthContext'
+import Login from './containers/Login'
+import GlobalStyle from './components/GlobalStyle'
 
 class App extends Component {
+  constructor(props) {
+    super(props)
+
+    this.toggleAuth = () => {
+      this.setState({ isAuthenticated: !this.state.isAuthenticated })
+    }
+
+    this.updateUser = email => {
+      this.setState({ updateUser: email })
+    }
+
+    this.state = {
+      isAuthenticated: false,
+      user: '',
+      toggleAuth: this.toggleAuth,
+      updateUser: this.updateUser
+    }
+  }
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
+      <Router>
+        <AuthContext.Provider value={this.state}>
+          <div>
+            <GlobalStyle />
+            <Route path="/" exact component={Login} />
+            <Route path="/login" component={Login} />
+          </div>
+        </AuthContext.Provider>
+      </Router>
+    )
   }
 }
 
-export default App;
+export default App
