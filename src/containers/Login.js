@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
+import { withRouter } from 'react-router-dom'
 import Button from '../components/Button'
 import Input from '../components/Input'
 import Screen from '../components/Screen'
@@ -38,7 +39,7 @@ class Login extends Component {
     this.setState({ passwordInput: e.target.value })
   }
 
-  onSubmit = (toggleAuth, updateUser) => {
+  onSubmit = (toggleAuth, updateUser, history) => {
     const { emailInput, passwordInput } = this.state
 
     if(!emailInput || !passwordInput) {
@@ -48,10 +49,15 @@ class Login extends Component {
 
     updateUser(emailInput)
     toggleAuth()
+
+    history.replace('/swipe')
   }
   
   render() {
+    const { history } = this.props
     const { emailInput, passwordInput } = this.state
+
+    console.log(history)
 
     return (
       <Screen>
@@ -70,7 +76,7 @@ class Login extends Component {
                 onChange={this.onChangePassword}
                 value={passwordInput}
               />
-              <Button onClick={() => this.onSubmit(toggleAuth, updateUser)}>
+              <Button onClick={() => this.onSubmit(toggleAuth, updateUser, history)}>
                 Login
               </Button>
             </Container>
@@ -81,4 +87,4 @@ class Login extends Component {
   }
 }
 
-export default Login
+export default withRouter(Login)

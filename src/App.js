@@ -2,7 +2,9 @@ import React, { Component } from 'react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import AuthContext from './context/AuthContext'
 import Login from './containers/Login'
+import Main from './containers/Main'
 import GlobalStyle from './components/GlobalStyle'
+import PrivateRoute from './components/PrivateRoute'
 
 class App extends Component {
   constructor(props) {
@@ -13,7 +15,7 @@ class App extends Component {
     }
 
     this.updateUser = email => {
-      this.setState({ updateUser: email })
+      this.setState(() => ({ user: email }))
     }
 
     this.state = {
@@ -25,16 +27,19 @@ class App extends Component {
   }
 
   render() {
+    const { isAuthenticated } = this.state
+
     return (
-      <Router>
-        <AuthContext.Provider value={this.state}>
+      <AuthContext.Provider value={this.state}>
+        <Router>
           <div>
             <GlobalStyle />
             <Route path="/" exact component={Login} />
             <Route path="/login" component={Login} />
+            <PrivateRoute path="/swipe" component={Main} isAuthenticated={isAuthenticated} />
           </div>
-        </AuthContext.Provider>
-      </Router>
+        </Router>
+      </AuthContext.Provider>
     )
   }
 }
