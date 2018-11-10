@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import posed from 'react-pose'
 import styled from 'styled-components'
 import axios from 'axios'
 import { API_BASE_URL } from '../constants'
@@ -25,6 +26,10 @@ const ButtonContainer = styled.div`
   justify-content: space-around;
   width: 100%;
 `
+
+const SwipeContainer = posed.div({
+  draggable: 'x'
+})
 
 class Main extends Component {
   state = {
@@ -101,12 +106,17 @@ class Main extends Component {
         {({ user, updateMatches }) => (
           <Container>
             <Notification pose={newMatch ? 'show' : 'hide'} />
-            <Image
-              asset={img.asset}
-              collection={img.collection}
-              title={img.title}
-              loading={loading ? true : false}
-            />
+            <SwipeContainer
+              onDragStart={() => console.log('Dragging!!!!')}
+              onDragEnd={() => console.log(this)}
+            >
+              <Image
+                asset={img.asset}
+                collection={img.collection}
+                title={img.title}
+                loading={loading ? true : false}
+              />
+            </SwipeContainer>
             <ButtonContainer>
               <RoundButton dislike onClick={() => this.onOpinion(user, false, updateMatches)}>
                 <ThumbDown width={24} height={24} />

@@ -1,26 +1,33 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
-import { withRouter } from 'react-router-dom'
+import { withRouter, Link } from 'react-router-dom'
 import Button from '../components/Button'
 import Input from '../components/Input'
+import IntroContainer from '../components/IntroContainer'
+import Title from '../components/Title'
 import { theme } from '../constants'
 import AuthContext from '../context/AuthContext'
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 100%;
-  max-width: 32rem;
-  background: ${theme.color.white};
-  border-radius: 8px;
-  box-shadow: 0 5px 15px rgba(0,0,0,.25), 0 2px 30px rgba(0,0,0,.15);
-  padding: 1.6rem 2.4rem 3.2rem;
+const SignUpText = styled.p`
+  font-size: 1.2rem;
+  color: ${theme.color.grey};
+  text-align: center;
+  margin-top: 1.6rem;
 `
 
-const Title = styled.h1`
-  font-size: 2.4rem;
-  line-height: 1.2;
+const TextLink = styled(Link)`
+  font-size: 1.2rem;
+  text-decoration: underline;
+  color: ${theme.color.secondary};
+  transition: color 140ms ease-in-out;
+
+  &:hover {
+    color: ${theme.color.main};
+  }
+
+  &:active {
+    color: ${theme.color.fg};
+  }
 `
 
 class Login extends Component {
@@ -54,29 +61,31 @@ class Login extends Component {
   
   render() {
     const { history } = this.props
-    const { emailInput } = this.state
-    // const { emailInput, passwordInput } = this.state
+    const { emailInput, passwordInput } = this.state
 
     return (
       <AuthContext.Consumer>
         {({ toggleAuth, updateUser }) => (
-          <Container>
+          <IntroContainer>
             <Title>Login</Title>
             <Input
-              placeholder="Input username..."
+              placeholder="Username"
               onChange={this.onChangeEmail}
               value={emailInput}
             />
-            {/* <Input
+            <Input
               type="password"
-              placeholder="Input password"
+              placeholder="Password"
               onChange={this.onChangePassword}
               value={passwordInput}
-            /> */}
+            />
             <Button onClick={() => this.onSubmit(toggleAuth, updateUser, history)}>
               Login
             </Button>
-          </Container>
+            <SignUpText>
+              Don't have an account? <TextLink to="/sign-up">Sign up here</TextLink>
+            </SignUpText>
+          </IntroContainer>
         )}
       </AuthContext.Consumer>
     )

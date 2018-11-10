@@ -13,6 +13,7 @@ const Button = styled.button`
   color: ${theme.color.offWhite};
   box-shadow: 0 2px 6px ${theme.color.secondary};
   transition: box-shadow 150ms ease-in;
+  cursor: pointer;
 
   &:hover {
     background: ${theme.color.mainDark};

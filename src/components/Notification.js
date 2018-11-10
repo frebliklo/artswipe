@@ -5,7 +5,7 @@ import posed from 'react-pose'
 import { theme } from '../constants'
 import { ReactComponent as Chevron } from '../assets/chevron.svg'
 
-const containerProps ={
+const containerProps = {
   init: { scale: 0 },
   show: { scale: 1 },
   hide: { scale: 0 }
