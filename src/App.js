@@ -6,7 +6,7 @@ import Main from './containers/Main'
 import GlobalStyle from './components/GlobalStyle'
 import PrivateRoute from './components/PrivateRoute'
 import Screen from './components/Screen'
-import Matches from './containers/Matches';
+import Matches from './containers/Matches'
 import Nav from './components/Nav'
 
 class App extends Component {
@@ -21,11 +21,27 @@ class App extends Component {
       this.setState(() => ({ user: email }))
     }
 
+    this.updateMatches = matches => {
+      const newMatches = []
+
+      matches.map(match => {
+        const exists = this.state.matches.includes(match)
+
+        if(exists) return null
+
+        return newMatches.push(match)
+      })
+
+      this.setState(() => ({
+        matches: newMatches
+      }))
+    }
+
     this.state = {
       isAuthenticated: false,
       user: '',
       toggleAuth: this.toggleAuth,
-      updateUser: this.updateUser
+      updateUser: this.updateUser,
     }
   }
 
@@ -40,8 +56,16 @@ class App extends Component {
             {isAuthenticated ? <Nav /> : null}
             <Route path="/" exact component={Login} />
             <Route path="/login" component={Login} />
-            <PrivateRoute path="/swipe" component={() => <Main user={user} />} isAuthenticated={isAuthenticated} />
-            <PrivateRoute path="/matches" component={() => <Matches/>} isAuthenticated={isAuthenticated} />
+            <PrivateRoute
+              path="/swipe"
+              component={() => <Main user={user} />}
+              isAuthenticated={isAuthenticated}
+            />
+            <PrivateRoute
+              path="/matches"
+              component={() => <Matches user={user}/>}
+              isAuthenticated={isAuthenticated}
+            />
           </Screen>
         </Router>
       </AuthContext.Provider>

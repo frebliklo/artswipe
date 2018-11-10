@@ -16,6 +16,7 @@ const NavLink = styled(Link)`
   background: none;
   border-radius: 4px;
   transition: background 200ms;
+  margin-right: .8rem;
 
   &:hover {
     background: rgba(0,0,0,.25);
@@ -28,6 +29,7 @@ const NavLink = styled(Link)`
 
 const Nav = () => (
   <NavContainer>
+    <NavLink to="/swipe">Swipe</NavLink>
     <NavLink to="/matches">Matches</NavLink>
   </NavContainer>
 )

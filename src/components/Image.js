@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import Spinner from './Spinner'
+import { theme } from '../constants'
 
 const Container = styled.div`
   display: flex;
@@ -38,6 +39,19 @@ const Img = styled.img`
   object-fit: cover;
 `
 
+const Title = styled.h3`
+  display: block;
+  position: absolute;
+  top: auto;
+  right: auto;
+  bottom: 1.2rem;
+  left: 1.2rem;
+  font-size: 2rem;
+  font-weight: 600;
+  color: ${theme.color.bg};
+  text-shadow: 0 0 2px rgba(0,0,0,.98);
+`
+
 const Image = ({ collection, asset, title, loading }) => (
   <Container loading={loading}>
     {loading ? (
@@ -46,6 +60,7 @@ const Image = ({ collection, asset, title, loading }) => (
       </LoadingContainer>
     ) : null}
     {asset ? <Img src={`http://samlinger.natmus.dk/${collection}/asset/${asset}/thumbnail/800`} alt={title} /> : null}
+    {title ? (<Title>{title}</Title>) : null}
   </Container>
 )
 

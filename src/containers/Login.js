@@ -63,7 +63,7 @@ class Login extends Component {
           <Container>
             <Title>Login</Title>
             <Input
-              placeholder="Input email..."
+              placeholder="Input username..."
               onChange={this.onChangeEmail}
               value={emailInput}
             />

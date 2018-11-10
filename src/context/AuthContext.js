@@ -4,7 +4,9 @@ const AuthContext = React.createContext({
   isAuthenticated: false,
   user: '',
   toggleAuth: () => {},
-  updateUser: () => {}
+  updateUser: () => {},
+  matches: [],
+  updateMatches: () => {}
 })
 
 export default AuthContext
