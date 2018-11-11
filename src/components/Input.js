@@ -10,9 +10,10 @@ const Container = styled.div`
   margin-top: 1.2rem;
 `
 
-const PosedPlaceholder = posed.p({
+const PosedPlaceholder = posed.label({
   empty: {
     fontSize: '1.6rem',
+    x: 0,
     y: 0,
     transition: {
       ease: 'anticipate',
@@ -21,6 +22,7 @@ const PosedPlaceholder = posed.p({
   },
   value: {
     fontSize: '1.2rem',
+    x: -8,
     y: -30,
     transition: {
       ease: 'anticipate',
@@ -40,7 +42,12 @@ const Placeholder = styled(PosedPlaceholder)`
   color: ${theme.color.grey};
 `
 
-const InputField = styled.input`
+const PosedInputField = posed.input({
+  init: { color: 'currentColor' },
+  error: { color: theme.color.dislike }
+})
+
+const InputField = styled(PosedInputField)`
   width: 100%;
   font-size: 1.6rem;
   line-height: 1.5;
@@ -49,7 +56,26 @@ const InputField = styled.input`
   border-radius: 4px;
   background: ${theme.color.offWhite};
   outline: none;
-  margin-bottom: 1.6rem;
+`
+
+const PosedError = posed.p({
+  init: {
+    opacity: 0,
+    marginTop: 0,
+    marginBottom: 0
+  },
+  error: {
+    opacity: 1,
+    marginTop: 4,
+    marginBottom: 12
+  }
+})
+
+const Error = styled(PosedError)`
+  font-size: 1.4rem;
+  line-height: 1.6rem;
+  margin: 0 .8rem;
+  color: ${theme.color.dislike};
 `
 
 class Input extends Component {
@@ -75,11 +101,18 @@ class Input extends Component {
 
   _onFocus = e => {
     this.setState(() => ({ focused: true }))
+
+    if(this.props.onFocus) {
+      this.props.onFocus(e)
+    }
   }
 
   _onChange = e => {
     this.setState(() => ({ focused: true }))
-    this.props.onChange(e)
+    
+    if(this.props.onChange) {
+      this.props.onChange(e)
+    }
   }
 
   _onBlur = e => {
@@ -96,18 +129,22 @@ class Input extends Component {
     const {
       type,
       placeholder,
-      value
+      value,
+      id,
+      error
     } = this.props
 
     return (
-      <Container>
+      <Container pose={error ? 'error' : 'init'}>
         <Placeholder 
           pose={this.state.focused ? 'value' : 'empty'}
           onClick={this.placeholderClick}
+          htmlFor={id}
         >
           {placeholder}
         </Placeholder>
         <InputField
+          id={id}
           ref={this.inputRef}
           type={type ? type : 'text'}
           onFocus={this._onFocus}
@@ -115,6 +152,7 @@ class Input extends Component {
           onBlur={this._onBlur}
           value={value}
         />
+        <Error pose={error ? 'error' : 'init'}>{error ? error : 'Required'}</Error>
       </Container>
     )
   }

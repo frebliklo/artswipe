@@ -6,7 +6,7 @@ const Button = styled.button`
   border-radius: 4px;
   font-size: 1.6rem;
   font-weight: 600;
-  padding: .8rem;
+  padding: 1.2rem;
   text-transform: uppercase;
   outline: none;
   background: ${theme.color.main};

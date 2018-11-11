@@ -1,12 +1,21 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 import { withRouter, Link } from 'react-router-dom'
+import { Formik } from 'formik'
+import * as Yup from 'yup'
 import Button from '../components/Button'
 import Input from '../components/Input'
 import IntroContainer from '../components/IntroContainer'
 import Title from '../components/Title'
 import { theme } from '../constants'
-import AuthContext from '../context/AuthContext'
+import { auth } from '../firebase'
+
+const Form = styled.form`
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  width: 100%;
+`
 
 const SignUpText = styled.p`
   font-size: 1.2rem;
@@ -30,64 +39,79 @@ const TextLink = styled(Link)`
   }
 `
 
+const LoginButton = styled(Button)`
+  margin-top: 1.6rem;
+`
+
 class Login extends Component {
-  state = {
-    emailInput: '',
-    passwordInput: '',
-    error: false
-  }
-
-  onChangeEmail = e => {
-    this.setState({ emailInput: e.target.value })
-  }
-
-  onChangePassword = e => {
-    this.setState({ passwordInput: e.target.value })
-  }
-
-  onSubmit = (toggleAuth, updateUser, history) => {
-    const { emailInput } = this.state
-
-    if(!emailInput) {
-      this.setState({ error: true })
-      return
-    }
-
-    updateUser(emailInput)
-    toggleAuth()
-
+  onSubmit = e => {
+    const { history } = this.props
+    
+    auth.signUpWithEmail(emailInput, passwordInput)
+      .then(() => console.log('Successfully logged in'))
+      .catch(err => console.log(err.code, err.message))
+    
     history.replace('/swipe')
   }
   
   render() {
-    const { history } = this.props
-    const { emailInput, passwordInput } = this.state
-
     return (
-      <AuthContext.Consumer>
-        {({ toggleAuth, updateUser }) => (
-          <IntroContainer>
-            <Title>Login</Title>
-            <Input
-              placeholder="Username"
-              onChange={this.onChangeEmail}
-              value={emailInput}
-            />
-            <Input
-              type="password"
-              placeholder="Password"
-              onChange={this.onChangePassword}
-              value={passwordInput}
-            />
-            <Button onClick={() => this.onSubmit(toggleAuth, updateUser, history)}>
-              Login
-            </Button>
-            <SignUpText>
-              Don't have an account? <TextLink to="/sign-up">Sign up here</TextLink>
-            </SignUpText>
-          </IntroContainer>
-        )}
-      </AuthContext.Consumer>
+      <Formik
+        initialValues={{
+          username: '',
+          password: ''
+        }}
+        validationSchema={Yup.object().shape({
+          username: Yup.string().email().required('Required'),
+          password: Yup.string().min(5).required()
+        })}
+        validateOnChange={false}
+        validateOnBlur={false}
+        onSubmit={(values, action) => {
+          console.log(values)
+        }}
+      >
+        {props => {
+          const {
+            values,
+            errors,
+            handleChange,
+            handleBlur,
+            handleSubmit
+          } = props
+
+          return (
+            <Form onSubmit={handleSubmit}>
+              <IntroContainer>
+                <Title>Login</Title>
+                <Input
+                  id="username"
+                  placeholder="Username"
+                  value={values.username}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={errors.username ? errors.username : null}
+                />
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="Password"
+                  value={values.password}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={errors.password ? errors.password : null}
+                />
+                <LoginButton type="submit">
+                  Login
+                </LoginButton>
+                <SignUpText>
+                  Don't have an account? <TextLink to="/sign-up">Sign up here</TextLink>
+                </SignUpText>
+              </IntroContainer>
+            </Form>
+          )
+        }}
+      </Formik>
     )
   }
 }

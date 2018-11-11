@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import styled from 'styled-components'
+// import styled from 'styled-components'
 import IntroContainer from '../components/IntroContainer'
-import Title from '../components/Title';
-import Input from '../components/Input';
+import Input from '../components/Input'
+import Title from '../components/Title'
 
 class Signup extends Component {
   render() {
