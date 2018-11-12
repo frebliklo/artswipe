@@ -108,7 +108,7 @@ class Nav extends Component {
   }
   
   render() {
-    const { navOpen, startLogout, closeNav } = this.props
+    const { navOpen, closeNav } = this.props
 
     return (
       <NavContainer pose={navOpen ? 'open' : 'closed'} open={navOpen}>
@@ -139,4 +139,6 @@ const mapDispatchToProps = dispatch => ({
   closeNav: () => dispatch(closeNav())
 })
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Nav))
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(Nav)
+)

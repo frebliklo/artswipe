@@ -45,7 +45,7 @@ class Login extends Component {
 
     startLogin(email, password)
       .then(res => {
-        history.replace('/')
+        history.replace('/app')
       })
       .catch(error => {
         alert(error)
@@ -123,4 +123,6 @@ const mapDispatchToProps = dispatch => ({
   startLogin: (username, password) => dispatch(startLogin(username, password))
 })
 
-export default withRouter(connect(null, mapDispatchToProps)(Login))
+export default withRouter(
+  connect(null, mapDispatchToProps)(Login)
+)

@@ -14,6 +14,7 @@ const Container = styled.main`
   align-items: center;
   width: 100%;
   max-width: 50rem;
+  margin: 0 auto;
   padding: 1.6rem;
 `
 

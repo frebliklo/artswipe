@@ -45,8 +45,7 @@ class Signup extends Component {
 
     startSignup(email, password)
       .then(res => {
-        console.log(res)
-        history.replace('/')
+        history.replace('/app')
       })
       .catch(error => {
         alert(error)
@@ -124,4 +123,6 @@ const mapDispatchToProps = dispatch => ({
   startSignup: (username, password) => dispatch(startSignup(username, password))
 })
 
-export default withRouter(connect(null, mapDispatchToProps)(Signup))
+export default withRouter(
+  connect(null, mapDispatchToProps)(Signup)
+)
