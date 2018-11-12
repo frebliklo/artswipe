@@ -1,31 +1,23 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
+
+import { startLogin } from '../actions/auth'
+
 import Button from '../components/Button'
 import Input from '../components/Input'
 import IntroContainer from '../components/IntroContainer'
 import Title from '../components/Title'
+
+import Form from '../components/styled/Form'
+import HelpText from '../components/styled/HelpText'
+
 import { theme } from '../constants'
-import { auth } from '../firebase'
-
-const Form = styled.form`
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  width: 100%;
-`
-
-const SignUpText = styled.p`
-  font-size: 1.2rem;
-  color: ${theme.color.grey};
-  text-align: center;
-  margin-top: 1.6rem;
-`
 
 const TextLink = styled(Link)`
-  font-size: 1.2rem;
   text-decoration: underline;
   color: ${theme.color.secondary};
   transition: color 140ms ease-in-out;
@@ -44,18 +36,25 @@ const LoginButton = styled(Button)`
 `
 
 class Login extends Component {
+  state = {
+    btnPressed: false,
+  }
+
   handleAuth = (email, password) => {
-    return console.log(email, password)
-    // const { history } = this.props
-    
-    // auth.signUpWithEmail(email, password)
-    //   .then(() => console.log('Successfully logged in'))
-    //   .catch(err => console.log(err.code, err.message))
-    
-    // history.replace('/swipe')
+    const { history, startLogin } = this.props
+
+    startLogin(email, password)
+      .then(res => {
+        history.replace('/')
+      })
+      .catch(error => {
+        alert(error)
+      })
   }
   
   render() {
+    const { btnPressed } = this.state
+
     return (
       <Formik
         initialValues={{
@@ -66,7 +65,7 @@ class Login extends Component {
           username: Yup.string().email().required('Required'),
           password: Yup.string().min(5).required()
         })}
-        validateOnChange={false}
+        validateOnChange={btnPressed}
         validateOnBlur={false}
         onSubmit={(values, actions) => {
           actions.setSubmitting(true)
@@ -108,9 +107,9 @@ class Login extends Component {
                 <LoginButton type="submit">
                   Login
                 </LoginButton>
-                <SignUpText>
+                <HelpText>
                   Don't have an account? <TextLink to="/sign-up">Sign up here</TextLink>
-                </SignUpText>
+                </HelpText>
               </IntroContainer>
             </Form>
           )
@@ -120,4 +119,8 @@ class Login extends Component {
   }
 }
 
-export default withRouter(Login)
+const mapDispatchToProps = dispatch => ({
+  startLogin: (username, password) => dispatch(startLogin(username, password))
+})
+
+export default withRouter(connect(null, mapDispatchToProps)(Login))
