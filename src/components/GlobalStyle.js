@@ -25,6 +25,10 @@ const GlobalStyle = createGlobalStyle`
     background: ${color.bg};
   }
 
+  h1 {
+    margin: 0 1.6rem;
+  }
+
   p {
     font-size: 1.6;
   }

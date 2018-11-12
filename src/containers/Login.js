@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import styled from 'styled-components'
 import { withRouter, Link } from 'react-router-dom'
+import styled from 'styled-components'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 import Button from '../components/Button'
@@ -44,14 +44,15 @@ const LoginButton = styled(Button)`
 `
 
 class Login extends Component {
-  onSubmit = e => {
-    const { history } = this.props
+  handleAuth = (email, password) => {
+    return console.log(email, password)
+    // const { history } = this.props
     
-    auth.signUpWithEmail(emailInput, passwordInput)
-      .then(() => console.log('Successfully logged in'))
-      .catch(err => console.log(err.code, err.message))
+    // auth.signUpWithEmail(email, password)
+    //   .then(() => console.log('Successfully logged in'))
+    //   .catch(err => console.log(err.code, err.message))
     
-    history.replace('/swipe')
+    // history.replace('/swipe')
   }
   
   render() {
@@ -67,8 +68,11 @@ class Login extends Component {
         })}
         validateOnChange={false}
         validateOnBlur={false}
-        onSubmit={(values, action) => {
-          console.log(values)
+        onSubmit={(values, actions) => {
+          actions.setSubmitting(true)
+          const { username, password } = values
+          this.handleAuth(username, password)
+          actions.resetForm()
         }}
       >
         {props => {

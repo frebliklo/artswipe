@@ -95,7 +95,7 @@ class Input extends Component {
     }
   }
 
-  placeholderClick = () => {
+  _placeholderClick = () => {
     this.inputRef.current.focus()
   }
 
@@ -138,7 +138,7 @@ class Input extends Component {
       <Container pose={error ? 'error' : 'init'}>
         <Placeholder 
           pose={this.state.focused ? 'value' : 'empty'}
-          onClick={this.placeholderClick}
+          onClick={this._placeholderClick}
           htmlFor={id}
         >
           {placeholder}
