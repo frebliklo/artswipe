@@ -7,7 +7,7 @@ export default (state = cultureReducerDefaultState, action) => {
     case ADDCULTURE:
       return [...state, action.culture]
     case REMOVECULTURE:
-      return state.filter(({ asset_id }) => asset_id !== action.asset_id)
+      return state.filter(({ asset_id }) => asset_id !== action.culture.asset_id)
     default:
       return state
   }
