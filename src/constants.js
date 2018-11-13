@@ -15,4 +15,4 @@ export const theme = {
   font: `'Source Sans Pro', Helvetica, Arial, sans-serif`,
 }
 
-export const API_BASE_URL = 'http://10.1.32.37:5000'
+export const API_BASE_URL = 'http://artswipe-api.feodor.dk'
