@@ -52,15 +52,10 @@ const Title = styled.h3`
   text-shadow: 0 0 2px rgba(0,0,0,.98);
 `
 
-const Image = ({ collection, asset, title, loading }) => (
-  <Container loading={loading}>
-    {loading ? (
-      <LoadingContainer>
-        <Spinner />
-      </LoadingContainer>
-    ) : null}
-    {asset ? <Img src={`http://samlinger.natmus.dk/${collection}/asset/${asset}/thumbnail/800`} alt={title} /> : null}
-    {title ? (<Title>{title}</Title>) : null}
+const Image = ({ assetId, title, thumb }) => (
+  <Container>
+    <Img id={assetId} src={thumb} alt={title} />
+    <Title>{title}</Title>
   </Container>
 )
 

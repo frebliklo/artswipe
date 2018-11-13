@@ -2,12 +2,19 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import moxios from 'moxios'
 
-import { addCulture, removeCulture, getCulture, sendChoice } from '../../actions/culture'
+import {
+  addCulture,
+  removeCulture,
+  getCulture,
+  sendChoice,
+  flushCulture
+} from '../../actions/culture'
 import {
   ADD_CULTURE,
   GET_CULTURE_START,
   REMOVE_CULTURE,
-  SEND_CHOICE_START
+  SEND_CHOICE_START,
+  FLUSH_CULTURE
 } from '../../actions/types'
 
 import culture from '../fixtures/culture'
@@ -34,6 +41,11 @@ describe('test pure function culture actions', () => {
       type: REMOVE_CULTURE,
       culture: culture[2]
     })
+  })
+
+  it('should setup removing of all culture items', () => {
+    const action = flushCulture()
+    expect(action).toEqual({ type: FLUSH_CULTURE })
   })
 })
 

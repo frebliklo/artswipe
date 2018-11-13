@@ -1,5 +1,5 @@
 import cultureReducer from '../../reducers/cultureReducer'
-import { ADD_CULTURE, REMOVE_CULTURE } from '../../actions/types'
+import { ADD_CULTURE, REMOVE_CULTURE, FLUSH_CULTURE } from '../../actions/types'
 
 import culture from '../fixtures/culture'
 
@@ -43,4 +43,13 @@ test('should remove correct culture item from state', () => {
     culture: culture[2]
   })
   expect(state).toEqual([culture[1],culture[0]])
+})
+
+test('should remove all culture items from state', () => {
+  const existingState = [culture[1], culture[2], culture[0]]
+  const state = cultureReducer(existingState, {
+    type: FLUSH_CULTURE,
+    culture: []
+  })
+  expect(state).toEqual([])
 })

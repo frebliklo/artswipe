@@ -39,21 +39,10 @@ class Login extends Component {
   state = {
     btnPressed: false,
   }
-
-  handleAuth = (email, password) => {
-    const { history, startLogin } = this.props
-
-    startLogin(email, password)
-      .then(res => {
-        history.replace('/app')
-      })
-      .catch(error => {
-        alert(error)
-      })
-  }
   
   render() {
     const { btnPressed } = this.state
+    const { history, startLogin } = this.props
 
     return (
       <Formik
@@ -70,8 +59,14 @@ class Login extends Component {
         onSubmit={(values, actions) => {
           actions.setSubmitting(true)
           const { username, password } = values
-          this.handleAuth(username, password)
-          actions.resetForm()
+          startLogin(username, password)
+            .then(() => {
+              actions.resetForm()
+              history.replace('/app')
+            })
+            .catch(error => {
+              alert(error)
+            })
         }}
       >
         {props => {

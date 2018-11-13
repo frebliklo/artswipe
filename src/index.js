@@ -7,6 +7,7 @@ import 'normalize.css/normalize.css'
 import configureStore from './store/configureStore'
 import firebase from './firebase'
 import { login, logout } from './actions/auth'
+import { getCulture } from './actions/culture'
 
 import AppRouter from './routes/AppRouter'
 
@@ -34,6 +35,7 @@ ReactDOM.render(
 firebase.auth().onAuthStateChanged(user => {
   if(user) {
     store.dispatch(login(user.uid))
+    store.dispatch(getCulture())
     renderApp()
   } else {
     store.dispatch(logout())

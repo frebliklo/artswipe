@@ -1,8 +1,8 @@
-import React, { Component } from 'react'
+import React from 'react'
+import { connect } from 'react-redux'
 import styled from 'styled-components'
 
 import Image from '../components/Image'
-import Notification from '../components/Notification'
 import RoundButton from '../components/RoundButton'
 import Container from '../components/styled/Container'
 
@@ -16,32 +16,30 @@ const ButtonContainer = styled.div`
   width: 100%;
 `
 
-class Main extends Component {
-  state = {
-    loading: false
-  }
-  
-  render() {
-    return (
-      <Container>
-        <Notification pose={this.props.newMatch ? 'show' : 'hide'} />
-        <Image
-          asset="7458"
-          collection="THM"
-          title="Some art"
-          loading={this.state.loading ? true : false}
-        />
-        <ButtonContainer>
-          <RoundButton dislike onClick={() => console.log('dislike')}>
-            <ThumbDown width={24} height={24} />
-          </RoundButton>
-          <RoundButton onClick={() => console.log('like')}>
-            <ThumbUp width={24} height={24} />
-          </RoundButton>
-        </ButtonContainer>
-      </Container>
-    )
-  }
+const Main = ({ cultureItems }) => {  
+  return (
+    <Container>
+      {cultureItems.length > 0 ? 
+        (<Image
+          assetId={cultureItems[0].asset_id}
+          title={cultureItems[0].title}
+          thumb={cultureItems[0].thumb}
+        />)
+      : null}
+      <ButtonContainer>
+        <RoundButton dislike onClick={() => console.log('dislike')}>
+          <ThumbDown width={24} height={24} />
+        </RoundButton>
+        <RoundButton onClick={() => console.log('like')}>
+          <ThumbUp width={24} height={24} />
+        </RoundButton>
+      </ButtonContainer>
+    </Container>
+  )
 }
 
-export default Main
+const mapStateToProps = (state, props) => ({
+  cultureItems: state.culture
+})
+
+export default connect(mapStateToProps)(Main)

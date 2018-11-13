@@ -4,9 +4,10 @@ import {
   ADD_CULTURE,
   GET_CULTURE_START,
   GET_CULTURE_ERROR,
+  REMOVE_CULTURE,
   SEND_CHOICE_START,
   SEND_CHOICE_ERROR,
-  REMOVE_CULTURE
+  FLUSH_CULTURE
 } from './types'
 
 import { API_BASE_URL } from '../constants'
@@ -70,8 +71,8 @@ export const sendChoice = (choice, culture) => {
     return axios({
       url: `${API_BASE_URL}/choose?user=${uid}&asset_id=${asset_id}&choice=${choice}`,
       method: 'get'
-    }).
-      then(res => {
+    })
+      .then(res => {
         dispatch(removeCulture(culture))
         return res
       })
@@ -81,3 +82,7 @@ export const sendChoice = (choice, culture) => {
       })
   }
 }
+
+export const flushCulture = () => ({
+  type: FLUSH_CULTURE
+})

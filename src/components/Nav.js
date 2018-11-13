@@ -8,6 +8,7 @@ import { ReactComponent as BackArrow } from '../assets/back-arrow.svg'
 import { ReactComponent as MenuIcon } from '../assets/menu.svg'
 
 import { startLogout } from '../actions/auth'
+import { flushCulture } from '../actions/culture'
 
 import { theme } from '../constants'
 
@@ -130,6 +131,7 @@ class Nav extends Component {
   
   handleLogout = () => {
     this.setState({ isOpen: false })
+    this.props.flushCulture()
     this.props.startLogout()
   }
 
@@ -180,6 +182,7 @@ class Nav extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
+  flushCulture: () => dispatch(flushCulture()),
   startLogout: () => dispatch(startLogout())
 })
 
