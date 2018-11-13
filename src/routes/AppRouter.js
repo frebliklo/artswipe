@@ -9,9 +9,10 @@ import Main from '../containers/Main'
 import Signup from '../containers/Signup'
 
 import Matches from '../containers/Matches'
-import GlobalStyle from '../components/GlobalStyle'
 import Nav from '../components/Nav'
 import Screen from '../components/Screen'
+
+import GlobalStyle from '../components/styled/GlobalStyle'
 
 const RouteWrapper = styled.div`
   width: 100%;

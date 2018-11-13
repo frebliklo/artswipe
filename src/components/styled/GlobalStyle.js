@@ -1,5 +1,5 @@
 import { createGlobalStyle } from 'styled-components'
-import { theme } from '../constants'
+import { theme } from '../../constants'
 
 const { color, font } = theme
 
