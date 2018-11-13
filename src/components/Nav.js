@@ -1,35 +1,46 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import posed from 'react-pose'
+import posed, { PoseGroup } from 'react-pose'
 import styled from 'styled-components'
 
 import { ReactComponent as BackArrow } from '../assets/back-arrow.svg'
+import { ReactComponent as MenuIcon } from '../assets/menu.svg'
 
 import { startLogout } from '../actions/auth'
-import { closeNav } from '../actions/nav'
 
 import { theme } from '../constants'
 
 const PosedNavContainer = posed.nav({
-  open: {
+  enter: {
     x: '0%',
     delayChildren: 200,
     staggerChildren: 50,
     transition: { ease: 'easeOut', duration: 250 }
   },
-  closed: { x: '-100%', delay: 300 }
+  exit: { x: '-100%', delay: 300 }
 })
 
 const PosedNavItem = posed.button({
-  open: { y: 0, opacity: 1 },
-  closed: { y: 20, opacity: 0 }
+  enter: { y: 0, opacity: 1 },
+  exit: { y: 20, opacity: 0 }
 })
 
 const PosedSection = posed.div({
-  open: { y: 0, opacity: 1 },
-  closed: { y: 20, opacity: 0 }
+  enter: { y: 0, opacity: 1 },
+  exit: { y: 20, opacity: 0 }
 })
+
+const MenuButton = styled.button`
+  position: absolute;
+  top: 1.6rem;
+  right: auto;
+  bottom: auto;
+  left: 1.6rem;
+  background: none;
+  border: none;
+  outline: none;
+`
 
 const NavContainer = styled(PosedNavContainer)`
   display: flex;
@@ -43,7 +54,7 @@ const NavContainer = styled(PosedNavContainer)`
   left: 0;
   min-width: 30rem;
   padding: 1.6rem;
-  background: ${theme.color.offWhite};
+  background: #FFFDED;
   z-index: 100;
   box-shadow: ${props => props.open ? '1px 0 35px rgba(0,0,0,.35)' : '0 0 0 rgba(0,0,0,0)'};
   transition: box-shadow 200ms ease-in-out;
@@ -86,11 +97,22 @@ const BackButton = styled.button`
   align-items: center;
   background: none;
   border: none;
+  border-radius: 4px;
   outline: none;
-  margin-bottom: 1.6rem;
+  margin-bottom: .8rem;
+  padding: .8rem 1.6rem .8rem .8rem;
+  transition: background 150ms ease-in-out;
 
   & svg > path {
     fill: ${theme.color.grey};
+  }
+
+  &:hover {
+    background: ${theme.color.secondary + '33'};
+  }
+
+  &:focus {
+    background: ${theme.color.secondary + '77'};
   }
 `
 
@@ -102,18 +124,30 @@ const BackText = styled.p`
 `
 
 class Nav extends Component {
-  handleLogout = () => {
-    this.props.closeNav()
-    this.props.startLogout()
+  state = {
+    isOpen: false
   }
   
-  render() {
-    const { navOpen, closeNav } = this.props
+  handleLogout = () => {
+    this.setState({ isOpen: false })
+    this.props.startLogout()
+  }
 
+  handleOpenNav = () => {
+    this.setState({ isOpen: true })
+  }
+
+  handleCloseNav = () => {
+    this.setState({ isOpen: false })
+  }
+
+  renderNavContainer = () => {
+    const { isOpen } = this.state
+    
     return (
-      <NavContainer pose={navOpen ? 'open' : 'closed'} open={navOpen}>
+      <NavContainer key="container" pose={isOpen ? 'open' : 'closed'} open={isOpen}>
         <Section>
-          <BackButton onClick={closeNav}>
+          <BackButton onClick={this.handleCloseNav}>
             <BackArrow width={20} height={20} />
             <BackText>Close</BackText>
           </BackButton>
@@ -128,17 +162,27 @@ class Nav extends Component {
       </NavContainer>
     )
   }
+  
+  render() {
+    const { isOpen } = this.state
+
+    return (
+      <>
+        <MenuButton onClick={this.handleOpenNav}>
+          <MenuIcon width={32} height={32} />
+        </MenuButton>
+        <PoseGroup>
+          {isOpen ? this.renderNavContainer() : null}
+        </PoseGroup>
+      </>
+    )
+  }
 }
 
-const mapStateToProps = (state, props) => ({
-  navOpen: state.nav.navOpen
-})
-
 const mapDispatchToProps = dispatch => ({
-  startLogout: () => dispatch(startLogout()),
-  closeNav: () => dispatch(closeNav())
+  startLogout: () => dispatch(startLogout())
 })
 
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(Nav)
+  connect(null, mapDispatchToProps)(Nav)
 )

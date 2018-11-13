@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -19,12 +20,12 @@ const RouteWrapper = styled.div`
   height: 100%;
 `
 
-const AppRouter = () => (
+const AppRouter = ({ isAuthenticated }) => (
   <Screen>
     <GlobalStyle />
     <Router>
       <RouteWrapper>
-        <Nav />
+        {isAuthenticated ? <Nav /> : null}
         <PrivateRoute path="/" component={Main} />
         <Route path="/login" component={Login} />
         <Route path="/sign-up" component={Signup} />
@@ -34,4 +35,8 @@ const AppRouter = () => (
   </Screen>
 )
 
-export default AppRouter
+const mapStateToProps = (state, props) => ({
+  isAuthenticated: !!state.auth.uid
+})
+
+export default connect(mapStateToProps)(AppRouter)
