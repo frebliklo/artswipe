@@ -2,11 +2,17 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import moxios from 'moxios'
 
-import { addCulture, removeCulture, getCulture } from '../../actions/culture'
-import { ADD_CULTURE, GET_CULTURE_START, REMOVE_CULTURE } from '../../actions/types'
+import { addCulture, removeCulture, getCulture, sendChoice } from '../../actions/culture'
+import {
+  ADD_CULTURE,
+  GET_CULTURE_START,
+  REMOVE_CULTURE,
+  SEND_CHOICE_START
+} from '../../actions/types'
 
 import culture from '../fixtures/culture'
 import getCultureMock from '../fixtures/getCultureMock'
+import getChoiceMock from '../fixtures/getChoiceMock'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -62,6 +68,32 @@ describe('test asynchronus culture action', () => {
     })
 
     return store.dispatch(getCulture()).then(() => {
+      expect(store.getActions()).toEqual(expectedActions)
+    })
+  })
+
+  it('should call SEND_SHOICE_START and REMOVE_CULTURE after sending opinion to api', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent()
+      request.respondWith({
+        status: 200,
+        response: getChoiceMock
+      })
+    })
+
+    const expectedActions = [
+      { type: SEND_CHOICE_START },
+      { type: REMOVE_CULTURE, culture: culture[0] }
+    ]
+
+    const uid = '134n31531'
+
+    const store = mockStore({
+      auth: { uid },
+      culture: [culture[0]]
+    })
+
+    return store.dispatch(sendChoice(true, culture[0])).then(() => {
       expect(store.getActions()).toEqual(expectedActions)
     })
   })
