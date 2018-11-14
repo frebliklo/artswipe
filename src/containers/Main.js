@@ -1,15 +1,17 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import posed from 'react-pose'
 import styled from 'styled-components'
 
+import Container from '../components/styled/Container'
 import Image from '../components/Image'
 import RoundButton from '../components/RoundButton'
-import Container from '../components/styled/Container'
+import SwipeCard from '../components/SwipeCard'
 
 import { ReactComponent as ThumbUp } from '../assets/thumbs-up.svg'
 import { ReactComponent as ThumbDown } from '../assets/thumbs-down.svg'
-import { getCulture } from '../actions/culture';
+
+import { getCulture } from '../actions/culture'
 
 const PosedContainer = posed(Container)({
   init: { scale: 0, opacity: 0 },
@@ -23,39 +25,49 @@ const ButtonContainer = styled.div`
   width: 100%;
 `
 
-class Main extends Component {
+class Main extends PureComponent {
   state = {
-    initialRender: true
+    initialRender: true,
+    currentX: 0,
+    cardPose: 'init'
   }
   
   componentDidMount() {
-    console.log('mounted')
     if(this.state.initialRender) {
       this.setState(() => ({ initialRender: false }))
     }
-    console.log(this.state)
   }
 
   componentDidUpdate(prevProps) {
-    console.log('updated')
-    console.log(this.state)
-    console.log('Previous:', prevProps)
     if(prevProps.cultureItems.length < 2) {
       this.props.getCulture()
     }
-    console.log('Next:', this.props)
   }
 
-  renderSwipeDeck = items => {
-    return items.map(item => (
-      <Image
-        key={item.asset_id}
-        assetId={item.asset_id}
-        title={item.title}
-        thumb={item.thumb}
-      />
-    ))
+  handleDrag = x => {
+    this.setState(() => ({ currentX: x }))
   }
+
+  handleDragEnd = () => {
+    const { currentX } = this.state
+    if(currentX > 100) {
+      this.setState(() => ({ cardPose: 'like' }))
+    } else if(currentX < -100) {
+      this.setState(() => ({ cardPose: 'dislike' }))
+    } else {
+      this.setState(() => ({ cardPose: 'init' }))
+    }
+  }
+
+  renderSwipeDeck = items => (
+    <SwipeCard onDrag={this.handleDrag} onDragEnd={this.handleDragEnd} cardPose={this.state.cardPose}>
+      <Image
+        assetId={items[0].asset_id}
+        title={items[0].title}
+        thumb={items[0].thumb}
+      />
+    </SwipeCard>
+  )
 
   render() {
     const { cultureItems } = this.props

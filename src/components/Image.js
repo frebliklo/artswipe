@@ -9,19 +9,13 @@ const PosedContainer = posed.div({
 })
 
 const Container = styled(PosedContainer)`
+  flex: 1;
   display: flex;
   justify-content: center;
   position: relative;
   align-items: center;
   width: 100%;
-  max-width: 40rem;
-  height: 45rem;
-  border-radius: 4px;
-  box-shadow: 0 5px 15px rgba(0,0,0,.15), 0 0 35px rgba(0,0,0,.05);
-  margin-bottom: 2.4rem;
-  overflow: hidden;
-  background: ${props => props.loading ? '#FFF' : 'none'};
-  transition: background 150ms ease-in-out;
+  height: 100%;
 `
 
 const Img = styled.img`
