@@ -10,6 +10,7 @@ import { login, logout } from './actions/auth'
 import { getCulture } from './actions/culture'
 
 import AppRouter from './routes/AppRouter'
+import Loading from './containers/Loading'
 
 const store = configureStore()
 
@@ -28,15 +29,16 @@ const jsx = (
 )
 
 ReactDOM.render(
-  <div>Loading...</div>,
+  <Loading />,
   document.getElementById('root')
 )
 
 firebase.auth().onAuthStateChanged(user => {
   if(user) {
     store.dispatch(login(user.uid))
-    store.dispatch(getCulture())
-    renderApp()
+    store.dispatch(getCulture()).then(() => {
+      renderApp()
+    })
   } else {
     store.dispatch(logout())
     renderApp()

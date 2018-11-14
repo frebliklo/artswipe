@@ -1,9 +1,14 @@
 import React from 'react'
+import posed from 'react-pose'
 import styled from 'styled-components'
-import Spinner from './Spinner'
 import { theme } from '../constants'
 
-const Container = styled.div`
+const PosedContainer = posed.div({
+  enter: { scale: 1, opacity: 1 },
+  exit: { scale: .4, opacity: 0 }
+})
+
+const Container = styled(PosedContainer)`
   display: flex;
   justify-content: center;
   position: relative;
@@ -17,19 +22,6 @@ const Container = styled.div`
   overflow: hidden;
   background: ${props => props.loading ? '#FFF' : 'none'};
   transition: background 150ms ease-in-out;
-`
-
-const LoadingContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background: rgba(0,0,0,.66);
-  z-index: 5;
 `
 
 const Img = styled.img`
@@ -53,7 +45,7 @@ const Title = styled.h3`
 `
 
 const Image = ({ assetId, title, thumb }) => (
-  <Container>
+  <Container key={assetId}>
     <Img id={assetId} src={thumb} alt={title} />
     <Title>{title}</Title>
   </Container>

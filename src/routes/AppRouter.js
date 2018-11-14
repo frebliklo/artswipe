@@ -7,6 +7,7 @@ import PrivateRoute from './PrivateRoute'
 
 import Login from '../containers/Login'
 import Main from '../containers/Main'
+import Public from '../containers/Public'
 import Signup from '../containers/Signup'
 
 import Matches from '../containers/Matches'
@@ -16,6 +17,11 @@ import Screen from '../components/Screen'
 import GlobalStyle from '../components/styled/GlobalStyle'
 
 const RouteWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
   width: 100%;
   height: 100%;
 `
@@ -26,9 +32,10 @@ const AppRouter = ({ isAuthenticated }) => (
     <Router>
       <RouteWrapper>
         {isAuthenticated ? <Nav /> : null}
-        <PrivateRoute path="/" component={Main} />
+        <Route path="/" exact component={Public} />
         <Route path="/login" component={Login} />
         <Route path="/sign-up" component={Signup} />
+        <PrivateRoute path="/app" component={Main} />
         <PrivateRoute path="/matches" component={Matches} />
       </RouteWrapper>
     </Router>
