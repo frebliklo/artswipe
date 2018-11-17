@@ -73,11 +73,11 @@ const NavItem = styled(PosedNavItem)`
   transition: background 150ms ease-in-out;
 
   &:hover {
-    background: ${theme.color.secondary + '33'};
+    background: rgba(0,0,0,.33);
   }
 
   &:focus {
-    background: ${theme.color.secondary + '77'};
+    background: rgba(0,0,0,.5);
   }
 `
 
