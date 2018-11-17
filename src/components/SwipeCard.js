@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import posed from 'react-pose'
 import { transform } from 'popmotion'
@@ -8,17 +8,23 @@ import { sendChoice } from '../actions/culture'
 
 import Image from './Image'
 
+const { pipe, clamp, interpolate, blendColor } = transform
+
 const SwipeableImage = posed.div({
   label: 'swipeCard',
   draggable: 'x',
   dragBounds: { left: -200, right: 200 },
-  init: { scale: 1, boxShadow: '0px 2px 5px rgba(0,0,0,0.01)' },
-  drag: { scale: 1.02, boxShadow: '0px 5px 35px rgba(0,0,0,0.5)' },
-  like: { x: '75%', opacity: 0, scale: 0.4 },
-  dislike: { x: '-75%', opacity: 0, scale: 0.4 },
+  enter: { opacity: 0, scale: 0.4 },
+  init: { opacity: 1, scale: 1, boxShadow: '0px 2px 5px rgba(0,0,0,0.25)' },
+  drag: { opacity: 1, scale: 1.02, boxShadow: '0px 5px 35px rgba(0,0,0,0.5)' },
+  like: { x: 300, opacity: 0, scale: 0.6 },
+  dislike: { x: -300, opacity: 0, scale: 0.6 },
   dragEnd: {
     transition: { type: 'spring' }
   },
+  passive: {
+    rotateZ: ['x', interpolate([-200, 0, 200], [-5, 0, 5])]
+  }
 })
 
 const ColorMask = styled.div`
@@ -28,8 +34,6 @@ const ColorMask = styled.div`
   bottom: 0;
   left: 0;
 `
-
-const { pipe, clamp, interpolate, blendColor } = transform
 
 const RedMask = posed(ColorMask)({
   passive: {
@@ -63,37 +67,61 @@ const Card = styled(SwipeableImage)`
   background: #FFF;
 `
 
-class SwipeCard extends Component {
+class SwipeCard extends PureComponent {
   state = {
     currentX: 0,
-    cardPose: 'init'
+    pose: this.props.pose
+  }
+
+  componentDidUpdate(prevProps) {
+    if(prevProps.pose !== this.props.pose) {
+      this.setState({ pose: this.props.pose })
+    }
   }
   
   _onDrag = x => {
     this.setState(() => ({ currentX: x }))
   }
   
-  _handleDragEnd = item => {
+  _handleDragEnd = () => {
     const { currentX } = this.state
-    const { sendChoice } = this.props
-    if(currentX > 100) {
-      this.setState(() => ({ cardPose: 'like' }))
+    if(currentX > 75) {
+      this.setState(() => ({ pose: 'like' }))
+    } else if(currentX < -75) {
+      this.setState(() => ({ pose: 'dislike' }))
+    } else {
+      this.setState(() => ({ pose: 'init' }))
+    }
+  }
+
+  _onAnimationEnd = (pose, item) => {
+    const { onAnimationEnd, sendChoice } = this.props
+    console.log(pose)
+    if(pose === 'like') {
+      onAnimationEnd()
       sendChoice(true, item)
-    } else if(currentX < -100) {
-      this.setState(() => ({ cardPose: 'dislike' }))
+    } else if(pose === 'dislike') {
+      onAnimationEnd()
       sendChoice(false, item)
     } else {
-      this.setState(() => ({ cardPose: 'init' }))
+      return null
     }
+  }
+
+  changePose = pose => {
+    console.log('Change pose to:', pose)
   }
   
   render() {
-    const { cardPose } = this.state
-    const { item } = this.props
+    const { pose } = this.state
+    const { item, swipeCard } = this.props
     return (
       <Card
-        pose={cardPose}
-        onDragEnd={() => this._handleDragEnd(item)}
+        ref={swipeCard}
+        initialPose="enter"
+        pose={pose}
+        onPoseComplete={pose => this._onAnimationEnd(pose, item)}
+        onDragEnd={this._handleDragEnd}
         onValueChange={{ x: this._onDrag }}
       >
         <RedMask />

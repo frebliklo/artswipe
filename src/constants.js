@@ -15,4 +15,5 @@ export const theme = {
   font: `'Source Sans Pro', Helvetica, Arial, sans-serif`,
 }
 
+export const CORS_ANYWHERE = 'https://cors-anywhere.herokuapp.com/'
 export const API_BASE_URL = 'http://artswipe-api.feodor.dk'

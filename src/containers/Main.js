@@ -1,37 +1,45 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import posed from 'react-pose'
-// import styled from 'styled-components'
+import styled from 'styled-components'
 
 import Container from '../components/styled/Container'
-// import RoundButton from '../components/RoundButton'
-import SwipeDeck from '../components/SwipeDeck'
+import RoundButton from '../components/RoundButton'
+import SwipeCard from '../components/SwipeCard'
 
-// import { ReactComponent as ThumbUp } from '../assets/thumbs-up.svg'
-// import { ReactComponent as ThumbDown } from '../assets/thumbs-down.svg'
+import { ReactComponent as ThumbUp } from '../assets/thumbs-up.svg'
+import { ReactComponent as ThumbDown } from '../assets/thumbs-down.svg'
 
-import { getCulture } from '../actions/culture'
+import { getCulture, sendChoice } from '../actions/culture'
 
-const PosedContainer = posed(Container)({
-  init: { scale: 0, opacity: 0 },
-  enter: { scale: 1, opacity: 1 }
-})
+const ImageContainer = styled.div`
+  width: 100%;
+  max-width: 40rem;
+  height: 44rem;
+  margin-bottom: 2.4rem;
+`
 
-// const ButtonContainer = styled.div`
-//   display: flex;
-//   flex-direction: row;
-//   justify-content: space-around;
-//   width: 100%;
-// `
+const buttonContainerConfig = {
+  init: { scale: 0 },
+  enter: { scale: 1 }
+}
 
-class Main extends Component {
-  state = {
-    initialRender: true
-  }
-  
-  componentDidMount() {
-    if(this.state.initialRender) {
-      this.setState(() => ({ initialRender: false }))
+const StyledButtonContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 100%;
+`
+
+const ButtonContainer = posed(StyledButtonContainer)(buttonContainerConfig)
+
+class Main extends PureComponent {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      activeItem: props.activeItem,
+      pose: 'init'
     }
   }
 
@@ -39,37 +47,52 @@ class Main extends Component {
     if(prevProps.cultureItems.length < 3) {
       this.props.getCulture().then(() => console.log('Got culture!'))
     }
+
+    if(prevProps.activeItem !== this.props.activeItem) {
+      this.setState(() => ({
+        activeItem: this.props.activeItem,
+        pose: 'init'
+      }))
+    }
   }
 
-  renderSwipeDeck = items => <SwipeDeck items={items} />
+  onAnimationEnd = () => {
+    this.setState({ activeItem: null })
+  }
+
+  handleClick = pose => {
+    this.setState({ pose })
+  }
 
   render() {
-    const { cultureItems } = this.props
-    const { initialRender } = this.state
+    const { activeItem, pose } = this.state
 
     return (
-      <PosedContainer pose={initialRender ? 'init' : 'enter'}>
-        {this.renderSwipeDeck(cultureItems)}
-        {/* ADD THIS IN WHEN FIGURING OUT TO IMPERATIVELY TRIGGER ANIMATION! */}
-        {/* <ButtonContainer>
-          <RoundButton dislike onClick={() => console.log('dislike')}>
+      <Container>
+        <ImageContainer>
+          {activeItem && <SwipeCard item={activeItem} pose={pose} onAnimationEnd={this.onAnimationEnd} />}
+        </ImageContainer>
+        <ButtonContainer initialPose="init" pose="enter">
+          <RoundButton dislike onClick={() => this.handleClick('dislike')}>
             <ThumbDown width={24} height={24} />
           </RoundButton>
-          <RoundButton onClick={() => console.log('like')}>
+          <RoundButton onClick={() => this.handleClick('like')}>
             <ThumbUp width={24} height={24} />
           </RoundButton>
-        </ButtonContainer> */}
-      </PosedContainer>
+        </ButtonContainer>
+      </Container>
     )
   }
 }
 
-const mapStateToProps = (state, props) => ({
-  cultureItems: state.culture
+const mapStateToProps = state => ({
+  activeItem: state.culture.active,
+  cultureItems: state.culture.all
 })
 
 const mapDispatchToProps = dispatch => ({
-  getCulture: () => dispatch(getCulture())
+  getCulture: () => dispatch(getCulture()),
+  sendChoice: (choice, culture) => dispatch(sendChoice(choice, culture))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Main)

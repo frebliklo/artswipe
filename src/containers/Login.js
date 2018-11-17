@@ -6,7 +6,6 @@ import { Formik } from 'formik'
 import * as Yup from 'yup'
 
 import { startLogin } from '../actions/auth'
-import { getCulture } from '../actions/culture'
 
 import Input from '../components/Input'
 import IntroContainer from '../components/IntroContainer'
@@ -43,7 +42,7 @@ class Login extends Component {
   
   render() {
     const { btnPressed } = this.state
-    const { history, startLogin, getCulture } = this.props
+    const { history, startLogin } = this.props
 
     return (
       <Formik
@@ -63,9 +62,7 @@ class Login extends Component {
           startLogin(username, password)
             .then(() => {
               actions.resetForm()
-              getCulture().then(() => {
-                history.replace('/app')
-              })
+              history.push('/app')
             })
             .catch(error => {
               alert(error)
@@ -118,8 +115,7 @@ class Login extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  startLogin: (username, password) => dispatch(startLogin(username, password)),
-  getCulture: () => dispatch(getCulture())
+  startLogin: (username, password) => dispatch(startLogin(username, password))
 })
 
 export default withRouter(
