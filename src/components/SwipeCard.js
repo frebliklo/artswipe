@@ -12,7 +12,7 @@ const SwipeableImage = posed.div({
   label: 'swipeCard',
   draggable: 'x',
   dragBounds: { left: -200, right: 200 },
-  init: { scale: 1, boxShadow: '0px 2px 15px rgba(0,0,0,0.1)' },
+  init: { scale: 1, boxShadow: '0px 2px 5px rgba(0,0,0,0.01)' },
   drag: { scale: 1.02, boxShadow: '0px 5px 35px rgba(0,0,0,0.5)' },
   like: { x: '75%', opacity: 0, scale: 0.4 },
   dislike: { x: '-75%', opacity: 0, scale: 0.4 },

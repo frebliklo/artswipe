@@ -8,7 +8,7 @@ const DeckContainer = styled.div`
   position: relative;
   width: 100%;
   max-width: 40rem;
-  height: 40rem;
+  height: 48rem;
   margin-bottom: 2.4rem;
 `
 

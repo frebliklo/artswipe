@@ -33,7 +33,7 @@ export const getCulture = () => {
     const uid = getState().auth.uid
 
     return axios({
-      url: `${API_BASE_URL}/culture?user=${uid}&count=3`,
+      url: `${API_BASE_URL}/culture?user=${uid}&count=10`,
       method: 'get'
     })
       .then(res => {
