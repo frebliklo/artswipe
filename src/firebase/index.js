@@ -1,5 +1,5 @@
-import * as firebase from 'firebase'
-require('firebase/auth')
+import * as firebase from 'firebase/app'
+import 'firebase/auth'
 
 const config = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
