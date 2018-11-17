@@ -1,12 +1,15 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import posed from 'react-pose'
 import { transform } from 'popmotion'
 import styled from 'styled-components'
 
-import { ReactComponent as ThumbUp } from '../assets/thumbs-up.svg'
-import { ReactComponent as ThumbDown } from '../assets/thumbs-down.svg'
+import { sendChoice } from '../actions/culture'
+
+import Image from './Image'
 
 const SwipeableImage = posed.div({
+  label: 'swipeCard',
   draggable: 'x',
   dragBounds: { left: -200, right: 200 },
   init: { scale: 1, boxShadow: '0px 2px 15px rgba(0,0,0,0.1)' },
@@ -24,7 +27,6 @@ const ColorMask = styled.div`
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: 200;
 `
 
 const { pipe, clamp, interpolate, blendColor } = transform
@@ -55,38 +57,59 @@ const Card = styled(SwipeableImage)`
   justify-content: center;
   align-items: center;
   width: 100%;
-  max-width: 40rem;
-  height: 45rem;
-  border-radius: 4px;
-  margin-bottom: 2.4rem;
+  height: 100%;
+  border-radius: 8px;
   overflow: hidden;
   background: #FFF;
 `
 
 class SwipeCard extends Component {
-  _handleDragEnd = () => {
-    this.props.onDragEnd()
-    console.log(this.props.cardPose)
+  state = {
+    currentX: 0,
+    cardPose: 'init'
+  }
+  
+  _onDrag = x => {
+    this.setState(() => ({ currentX: x }))
+  }
+  
+  _handleDragEnd = item => {
+    const { currentX } = this.state
+    const { sendChoice } = this.props
+    if(currentX > 100) {
+      this.setState(() => ({ cardPose: 'like' }))
+      sendChoice(true, item)
+    } else if(currentX < -100) {
+      this.setState(() => ({ cardPose: 'dislike' }))
+      sendChoice(false, item)
+    } else {
+      this.setState(() => ({ cardPose: 'init' }))
+    }
   }
   
   render() {
-    const { onDrag, children, cardPose } = this.props
+    const { cardPose } = this.state
+    const { item } = this.props
     return (
       <Card
         pose={cardPose}
-        onDragEnd={this._handleDragEnd}
-        onValueChange={{ x: onDrag }}
+        onDragEnd={() => this._handleDragEnd(item)}
+        onValueChange={{ x: this._onDrag }}
       >
-        <RedMask>
-          <ThumbDown width={48} height={48} />
-        </RedMask>
-        <GreenMask>
-          <ThumbUp width={48} height={48} />
-        </GreenMask>
-        {children}
-      </Card>    
+        <RedMask />
+        <GreenMask />
+        <Image
+          assetId={item.asset_id}
+          title={item.title}
+          thumb={item.thumb}
+        />
+      </Card>
     )
   }
 }
 
-export default SwipeCard
+const mapDispatchToProps = dispatch => ({
+  sendChoice: (choice, culture) => dispatch(sendChoice(choice, culture))
+})
+
+export default connect(null, mapDispatchToProps)(SwipeCard)

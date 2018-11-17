@@ -40,8 +40,8 @@ const Title = styled.h3`
 
 const Image = ({ assetId, title, thumb }) => (
   <Container key={assetId}>
+    <Title>{title ? title : 'Ingen titel!'}</Title>
     <Img id={assetId} src={thumb} alt={title} />
-    <Title>{title}</Title>
   </Container>
 )
 

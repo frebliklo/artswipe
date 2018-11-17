@@ -132,9 +132,10 @@ class Nav extends Component {
   handleLogout = () => {
     const { flushCulture, startLogout, history } = this.props
     this.setState({ isOpen: false })
-    flushCulture()
-    startLogout()
-    history.replace('/')
+    startLogout().then(() => {
+      flushCulture()
+      history.replace('/')
+    })
   }
 
   handleOpenNav = () => {

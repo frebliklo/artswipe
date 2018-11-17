@@ -9,17 +9,17 @@ test('should set default state', () => {
 })
 
 test('should add culture object to state', () => {
-  const item = culture[0]
+  const item = [culture[0]]
   const state = cultureReducer(undefined, {
     type: ADD_CULTURE,
     culture: item
   })
-  expect(state).toEqual([item])
+  expect(state).toEqual(item)
 })
 
 test('should add aditional culture to state', () => {
   const existingState = [culture[0]]
-  const item = culture[2] 
+  const item = [culture[2]]
   const state = cultureReducer(existingState, {
     type: ADD_CULTURE,
     culture: item

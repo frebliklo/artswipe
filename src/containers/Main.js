@@ -1,12 +1,11 @@
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import posed from 'react-pose'
 import styled from 'styled-components'
 
 import Container from '../components/styled/Container'
-import Image from '../components/Image'
 import RoundButton from '../components/RoundButton'
-import SwipeCard from '../components/SwipeCard'
+import SwipeDeck from '../components/SwipeDeck'
 
 import { ReactComponent as ThumbUp } from '../assets/thumbs-up.svg'
 import { ReactComponent as ThumbDown } from '../assets/thumbs-down.svg'
@@ -25,11 +24,9 @@ const ButtonContainer = styled.div`
   width: 100%;
 `
 
-class Main extends PureComponent {
+class Main extends Component {
   state = {
-    initialRender: true,
-    currentX: 0,
-    cardPose: 'init'
+    initialRender: true
   }
   
   componentDidMount() {
@@ -39,35 +36,12 @@ class Main extends PureComponent {
   }
 
   componentDidUpdate(prevProps) {
-    if(prevProps.cultureItems.length < 2) {
+    if(prevProps.cultureItems.length < 3) {
       this.props.getCulture()
     }
   }
 
-  handleDrag = x => {
-    this.setState(() => ({ currentX: x }))
-  }
-
-  handleDragEnd = () => {
-    const { currentX } = this.state
-    if(currentX > 100) {
-      this.setState(() => ({ cardPose: 'like' }))
-    } else if(currentX < -100) {
-      this.setState(() => ({ cardPose: 'dislike' }))
-    } else {
-      this.setState(() => ({ cardPose: 'init' }))
-    }
-  }
-
-  renderSwipeDeck = items => (
-    <SwipeCard onDrag={this.handleDrag} onDragEnd={this.handleDragEnd} cardPose={this.state.cardPose}>
-      <Image
-        assetId={items[0].asset_id}
-        title={items[0].title}
-        thumb={items[0].thumb}
-      />
-    </SwipeCard>
-  )
+  renderSwipeDeck = items => <SwipeDeck items={items} />
 
   render() {
     const { cultureItems } = this.props
@@ -75,7 +49,7 @@ class Main extends PureComponent {
 
     return (
       <PosedContainer pose={initialRender ? 'init' : 'enter'}>
-        {cultureItems && this.renderSwipeDeck(cultureItems)}
+        {this.renderSwipeDeck(cultureItems)}
         <ButtonContainer>
           <RoundButton dislike onClick={() => console.log('dislike')}>
             <ThumbDown width={24} height={24} />
