@@ -36,6 +36,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "dotenv": "^6.1.0",
     "enzyme": "^3.7.0",
     "enzyme-adapter-react-16": "^1.7.0",
     "moxios": "^0.4.0",

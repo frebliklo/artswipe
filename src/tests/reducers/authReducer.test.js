@@ -10,7 +10,7 @@ test('should set uid for login', () => {
   const uid = 'sadflkafs72234'
   const action = {
     type: LOGIN,
-    uid
+    user: { uid }
   }
   const state = authReducer(undefined, action)
   expect(state).toEqual({ uid })
