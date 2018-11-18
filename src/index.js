@@ -11,6 +11,7 @@ import { getCulture } from './actions/culture'
 
 import AppRouter from './routes/AppRouter'
 import Loading from './containers/Loading'
+import { getUser } from './firebase/db'
 
 const store = configureStore()
 
@@ -35,7 +36,7 @@ ReactDOM.render(
 
 firebase.auth().onAuthStateChanged(user => {
   if(user) {
-    store.dispatch(login(user.uid))
+    getUser(user.uid).then(user => store.dispatch(login(user)))
     store.dispatch(getCulture()).then(() => {
       renderApp()
     })

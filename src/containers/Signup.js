@@ -38,40 +38,45 @@ const LoginButton = styled(Button)`
 class Signup extends Component {
   state = {
     btnPressed: false,
-  }
-
-  handleAuth = (email, password) => {
-    const { history, startSignup } = this.props
-
-    startSignup(email, password)
-      .then(res => {
-        history.replace('/app')
-      })
-      .catch(error => {
-        alert(error)
-      })
+    pose: 'init'
   }
 
   render() {
     const { btnPressed } = this.state
+    const { history, startSignup } = this.props
 
     return (
       <Formik
         initialValues={{
-          username: '',
-          password: ''
+          firstName: '',
+          lastName: '',
+          email: '',
+          password: '',
+          passwordConfirm: ''
         }}
         validationSchema={Yup.object().shape({
-          username: Yup.string().email().required('Required'),
-          password: Yup.string().min(5).required()
+          firstName: Yup.string().required('First name is required'),
+          lastName: Yup.string().required('Last name is required'),
+          email: Yup.string().email('Must be a valid email address').required('Required'),
+          password: Yup.string().min(5, 'Password must be at least 5 characters').required(),
+          passwordConfirm: Yup.string().oneOf([Yup.ref('password')], 'Passwords do not match').required('Password confirmation is required')
         })}
         validateOnChange={btnPressed}
         validateOnBlur={false}
         onSubmit={(values, actions) => {
+          this.setState({ btnPressed: true })
           actions.setSubmitting(true)
-          const { username, password } = values
-          this.handleAuth(username, password)
-          actions.resetForm()
+          const { firstName, lastName, email, password } = values
+          const user = { firstName, lastName, email }
+          startSignup(user, password)
+            .then(() => {
+              this.setState({ pose: 'exit' })
+              actions.resetForm()
+              history.push('/app')
+            })
+            .catch(error => {
+              alert(error)
+            })
         }}
       >
         {props => {
@@ -88,12 +93,28 @@ class Signup extends Component {
               <IntroContainer>
                 <Title>Sign up</Title>
                 <Input
-                  id="username"
-                  placeholder="Username"
-                  value={values.username}
+                  id="firstName"
+                  placeholder="First name"
+                  value={values.firstName}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  error={errors.username ? errors.username : null}
+                  error={errors.firstName ? errors.firstName : null}
+                />
+                <Input
+                  id="lastName"
+                  placeholder="Last name"
+                  value={values.lastName}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={errors.lastName ? errors.lastName : null}
+                />
+                <Input
+                  id="email"
+                  placeholder="Email"
+                  value={values.email}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={errors.email ? errors.email : null}
                 />
                 <Input
                   id="password"
@@ -103,6 +124,15 @@ class Signup extends Component {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   error={errors.password ? errors.password : null}
+                />
+                <Input
+                  id="passwordConfirm"
+                  type="password"
+                  placeholder="Confirm password"
+                  value={values.passwordConfirm}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={errors.passwordConfirm ? errors.passwordConfirm : null}
                 />
                 <LoginButton type="submit">
                   Sign up

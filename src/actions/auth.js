@@ -1,9 +1,10 @@
 import { LOGIN, LOGOUT, SIGNUP } from './types'
 import { signOut, signInWithEmail, signUpWithEmail } from '../firebase'
+import { createUser } from '../firebase/db'
 
-export const login = uid => ({
+export const login = user => ({
   type: LOGIN,
-  uid
+  user
 })
 
 export const startLogin = (username, password) => {
@@ -12,14 +13,24 @@ export const startLogin = (username, password) => {
   }
 }
 
-export const signup = uid => ({
+export const signup = user => ({
   type: SIGNUP,
-  uid
+  user
 })
 
-export const startSignup = (username, password) => {
+export const startSignup = (user, password) => {
   return () => {
-    return signUpWithEmail(username, password)
+    const { firstName, lastName, email } = user
+    return signUpWithEmail(email, password).then(auth => {
+      const newUser = {
+        uid: auth.user.uid,
+        firstName,
+        lastName,
+        email
+      }
+      console.log(newUser)
+      createUser(newUser)
+    })
   }
 }
 

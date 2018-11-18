@@ -1,5 +1,6 @@
 import * as firebase from 'firebase/app'
 import 'firebase/auth'
+import 'firebase/database'
 
 const config = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -23,5 +24,7 @@ export const signInWithEmail = (email, password) => {
 }
 
 export const signOut = () => firebase.auth().signOut()
+
+export const db = firebase.database()
 
 export default firebase

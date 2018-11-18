@@ -10,7 +10,7 @@ import {
   FLUSH_CULTURE
 } from './types'
 
-import { API_BASE_URL, CORS_ANYWHERE } from '../constants'
+import { API_BASE_URL } from '../constants'
 
 export const addCulture = culture => ({
   type: ADD_CULTURE,
@@ -33,7 +33,7 @@ export const getCulture = () => {
     const uid = getState().auth.uid
 
     return axios({
-      url: `${CORS_ANYWHERE}${API_BASE_URL}/culture?user=${uid}&count=5`,
+      url: `${API_BASE_URL}/culture?user=${uid}&count=5`,
       method: 'get',
       // headers: { 'Origin': `${API_BASE_URL}` }
     })
@@ -70,7 +70,7 @@ export const sendChoice = (choice, culture) => {
     const { asset_id } = culture
 
     return axios({
-      url: `${CORS_ANYWHERE}${API_BASE_URL}/choose?user=${uid}&asset_id=${asset_id}&choice=${choice}`,
+      url: `${API_BASE_URL}/choose?user=${uid}&asset_id=${asset_id}&choice=${choice}`,
       method: 'get',
       // headers: { 'Origin': `${API_BASE_URL}` }
     })
