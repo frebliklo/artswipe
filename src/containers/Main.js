@@ -3,9 +3,10 @@ import { connect } from 'react-redux'
 import posed from 'react-pose'
 import styled from 'styled-components'
 
-import Container from '../components/styled/Container'
-import RoundButton from '../components/RoundButton'
 import SwipeCard from '../components/SwipeCard'
+
+import Container from '../components/styled/Container'
+import RoundButton from '../components/styled/RoundButton'
 
 import { ReactComponent as ThumbUp } from '../assets/thumbs-up.svg'
 import { ReactComponent as ThumbDown } from '../assets/thumbs-down.svg'

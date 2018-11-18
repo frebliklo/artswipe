@@ -12,9 +12,9 @@ import Signup from '../containers/Signup'
 
 import Matches from '../containers/Matches'
 import Nav from '../components/Nav'
-import Screen from '../components/Screen'
 
 import GlobalStyle from '../components/styled/GlobalStyle'
+import Screen from '../components/styled/Screen'
 
 const RouteWrapper = styled.div`
   display: flex;
@@ -42,7 +42,7 @@ const AppRouter = ({ isAuthenticated }) => (
   </Screen>
 )
 
-const mapStateToProps = (state, props) => ({
+const mapStateToProps = state => ({
   isAuthenticated: !!state.auth.uid
 })
 

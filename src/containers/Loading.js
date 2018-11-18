@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import Screen from '../components/Screen'
+import Screen from '../components/styled/Screen'
 
 import { theme } from '../constants'
 

@@ -8,11 +8,11 @@ import * as Yup from 'yup'
 import { startLogin } from '../actions/auth'
 
 import Input from '../components/Input'
-import IntroContainer from '../components/IntroContainer'
 
 import Button from '../components/styled/Button'
 import Form from '../components/styled/Form'
 import HelpText from '../components/styled/HelpText'
+import IntroContainer from '../components/styled/IntroContainer'
 import Title from '../components/styled/Title'
 
 import { theme } from '../constants'
