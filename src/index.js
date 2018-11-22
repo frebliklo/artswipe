@@ -34,14 +34,14 @@ ReactDOM.render(
   document.getElementById('root')
 )
 
-firebase.auth().onAuthStateChanged(user => {
-  if(user) {
-    getUser(user.uid).then(user => store.dispatch(login(user)))
-    store.dispatch(getCulture()).then(() => {
-      renderApp()
-    })
+firebase.auth().onAuthStateChanged(async auth => {
+  if(auth) {
+    const user = await getUser(auth.uid)
+    store.dispatch(login(user))
+    await store.dispatch(getCulture())
+    renderApp()
   } else {
-    store.dispatch(logout())
+    await store.dispatch(logout())
     renderApp()
   }
 })

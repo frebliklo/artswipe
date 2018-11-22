@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { withRouter, Link } from 'react-router-dom'
+import { withRouter, Link, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { theme } from '../constants'
@@ -65,16 +65,9 @@ const SubTittle = styled.h2`
 `
 
 class Public extends Component {
-  componentDidMount() {
-    const { isAuthenticated, history } = this.props
-    
-    if(isAuthenticated) {
-      history.push('/app')
-    }
-  }
-  
   render() {
-    return (
+    const { isAuthenticated } = this.props
+    return isAuthenticated ? <Redirect to="/app" /> : (
       <PublicContainer>
         <PublicNav>
           <NavLink to="/login">Login</NavLink>
