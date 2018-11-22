@@ -1,5 +1,6 @@
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 import posed from 'react-pose'
 import styled from 'styled-components'
 
@@ -34,7 +35,7 @@ const StyledButtonContainer = styled.div`
 
 const ButtonContainer = posed(StyledButtonContainer)(buttonContainerConfig)
 
-class Main extends PureComponent {
+class Main extends Component {
   constructor(props) {
     super(props)
 
@@ -96,4 +97,6 @@ const mapDispatchToProps = dispatch => ({
   sendChoice: (choice, culture) => dispatch(sendChoice(choice, culture))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Main)
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(Main)
+)
