@@ -40,7 +40,6 @@ const SignupForm = ({ history, startSignup }) => (
       const user = { firstName, lastName, email }
       startSignup(user, password)
         .then(() => {
-          this.setState({ pose: 'exit' })
           actions.resetForm()
           history.push('/app')
         })

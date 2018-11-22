@@ -15,6 +15,12 @@ if(!firebase.apps.length) {
   firebase.initializeApp(config)
 }
 
+const facebookLoginProvider = new firebase.auth.FacebookAuthProvider()
+
+export const signInWithFacebook = () => {
+  return firebase.auth().signInWithPopup(facebookLoginProvider)
+}
+
 export const signUpWithEmail = (email, password) => {
   return firebase.auth().createUserWithEmailAndPassword(email, password)
 }

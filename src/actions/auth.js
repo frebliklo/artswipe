@@ -20,13 +20,11 @@ export const signup = user => ({
 
 export const startSignup = (user, password) => {
   return () => {
-    const { firstName, lastName, email } = user
+    const { email } = user
     return signUpWithEmail(email, password).then(auth => {
       const newUser = {
         uid: auth.user.uid,
-        firstName,
-        lastName,
-        email
+        ...user
       }
       console.log(newUser)
       createUser(newUser)
