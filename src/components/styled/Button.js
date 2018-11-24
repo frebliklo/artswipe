@@ -5,12 +5,12 @@ import { theme } from '../../constants'
 const Button = styled.button`
   border: none;
   border-radius: 4px;
-  font-size: 1.6rem;
+  font-size: ${props => props.small ? '1.4rem' : '1.6rem'};
   line-height: 1.5;
   font-weight: 600;
   margin-top: ${props => props.mt ? props.mt : 0};
   margin-bottom: ${props => props.mb ? props.mb : 0};
-  padding: 1.2rem;
+  padding: ${props => props.small ? '.4rem 1.2rem' : '1.2rem'};
   text-transform: uppercase;
   outline: none;
   background: ${theme.color.main};

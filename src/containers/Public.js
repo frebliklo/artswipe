@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter, Link, Redirect } from 'react-router-dom'
-// import posed, { PoseGroup } from 'react-pose'
 import styled from 'styled-components'
 
 import { theme } from '../constants'
 
 import LoginModal from '../components/LoginModal'
+
+import Button from '../components/styled/Button'
 
 const PublicContainer = styled.div`
   display: flex;
@@ -28,9 +29,10 @@ const PublicNav = styled.nav`
 
 const NavLink = styled(Link)`
   font-size: 1.4rem;
+  line-height: 1.5;
   color: ${theme.color.main};
   padding: .8rem 1.2rem;
-  margin-bottom: 1.6rem;
+  margin-right: 1.2rem;
   background: none;
   border: none;
   border-radius: 4px;
@@ -86,8 +88,8 @@ class Public extends Component {
       />
       <PublicContainer>
         <PublicNav>
-          <NavLink to="/login">Login</NavLink>
-          <button onClick={() => this.setState({ loginVisible: !this.state.loginVisible })}>Test</button>
+          <NavLink to="/signup">Create account</NavLink>
+          <Button small onClick={() => this.setState({ loginVisible: !this.state.loginVisible })}>Sign in</Button>
         </PublicNav>
         <HeaderContainer>
           <div>
