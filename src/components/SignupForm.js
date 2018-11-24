@@ -1,7 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import styled from 'styled-components'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 
@@ -11,10 +10,6 @@ import Input from './Input'
 
 import Button from './styled/Button'
 import Form from './styled/Form'
-
-const LoginButton = styled(Button)`
-  margin-top: 1.6rem;
-`
 
 const SignupForm = ({ history, startSignup }) => (
   <Formik
@@ -29,7 +24,7 @@ const SignupForm = ({ history, startSignup }) => (
       firstName: Yup.string().required('First name is required'),
       lastName: Yup.string().required('Last name is required'),
       email: Yup.string().email('Must be a valid email address').required('Required'),
-      password: Yup.string().min(5, 'Password must be at least 5 characters').required(),
+      password: Yup.string().min(5, 'Password must be at least 5 characters').required('Password is required'),
       passwordConfirm: Yup.string().oneOf([Yup.ref('password')], 'Passwords do not match').required('Password confirmation is required')
     })}
     validateOnChange={false}
@@ -101,9 +96,9 @@ const SignupForm = ({ history, startSignup }) => (
             onBlur={handleBlur}
             error={errors.passwordConfirm ? errors.passwordConfirm : null}
           />
-          <LoginButton type="submit">
+          <Button mt="1.6rem" type="submit">
             Sign up
-          </LoginButton>
+          </Button>
         </Form>
       )
     }}

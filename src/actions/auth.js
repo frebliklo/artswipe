@@ -19,16 +19,14 @@ export const signup = user => ({
 })
 
 export const startSignup = (user, password) => {
-  return () => {
+  return async () => {
     const { email } = user
-    return signUpWithEmail(email, password).then(auth => {
-      const newUser = {
-        uid: auth.user.uid,
-        ...user
-      }
-      console.log(newUser)
-      createUser(newUser)
-    })
+    const auth = await signUpWithEmail(email, password);
+    const newUser = {
+      uid: auth.user.uid,
+      ...user
+    };
+    createUser(newUser);
   }
 }
 

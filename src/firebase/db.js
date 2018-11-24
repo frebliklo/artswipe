@@ -7,8 +7,7 @@ export const createUser = user => {
   })
 }
 
-export const getUser = uid => {
-  return db.ref('users/' + uid).once('value').then(snapshot => {
-    return snapshot.val()
-  })
+export const getUser = async uid => {
+  const snapshot = await db.ref('users/' + uid).once('value');
+  return snapshot.val();
 }

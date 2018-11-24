@@ -1,31 +1,45 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
-import { withRouter, Link } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { startSignup } from '../actions/auth'
 
 import SignupForm from '../components/SignupForm'
 
+import FacebookButton from '../components/styled/FacebookButton'
 import HelpText from '../components/styled/HelpText'
 import IntroContainer from '../components/styled/IntroContainer'
+import SeperatorText from '../components/styled/SeperatorText'
+import TextLink from '../components/styled/TextLink'
 import Title from '../components/styled/Title'
 
-import { theme } from '../constants'
+import { ReactComponent as BackArrow } from '../assets/back-arrow.svg'
+
 import { signInWithFacebook } from '../firebase'
 import { createUser } from '../firebase/db'
 
-const TextLink = styled(Link)`
-  text-decoration: underline;
-  color: ${theme.color.secondary};
-  transition: color 140ms ease-in-out;
+const Header = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+`
 
-  &:hover {
-    color: ${theme.color.main};
+const BackButton = styled(BackArrow)`
+  width: 2.4rem;
+  height: 2.4rem;
+  padding: .4rem;
+  margin-right: .8rem;
+  border-radius: 4px;
+  transition: background 175ms ease-in-out;
+
+  &:hover, &:focus {
+    background: rgba(0,0,0,.1);
   }
 
   &:active {
-    color: ${theme.color.fg};
+    background: rgba(0,0,0,.25);
   }
 `
 
@@ -47,11 +61,19 @@ class Signup extends PureComponent {
   }
 
   render() {
+    const { history } = this.props
+
     return (
       <IntroContainer>
-        <Title>Sign up</Title>
+        <Header>
+          <BackButton onClick={() => history.push('/')} />
+          <Title>Create account</Title>
+        </Header>
         <SignupForm />
-        <button onClick={this.handleFacebookSignup}>Sign up with Facebook</button>
+        <SeperatorText>
+          - or use one of these services -
+        </SeperatorText>
+        <FacebookButton onClick={this.handleFacebookSignup} mb=".8rem">Sign up with Facebook</FacebookButton>
         <HelpText>
           Already have an account? <TextLink to="/login">Sign in here</TextLink>
         </HelpText>

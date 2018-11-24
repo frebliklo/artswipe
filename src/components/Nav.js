@@ -129,13 +129,12 @@ class Nav extends Component {
     isOpen: false
   }
   
-  handleLogout = () => {
+  handleLogout = async () => {
     const { flushCulture, startLogout, history } = this.props
     this.setState({ isOpen: false })
-    startLogout().then(() => {
-      flushCulture()
-      history.replace('/')
-    })
+    await startLogout()
+    await flushCulture()
+    history.push('/')
   }
 
   handleOpenNav = () => {
@@ -177,7 +176,7 @@ class Nav extends Component {
           <MenuIcon width={32} height={32} />
         </MenuButton>
         <PoseGroup>
-          {isOpen ? this.renderNavContainer() : null}
+          {isOpen && this.renderNavContainer()}
         </PoseGroup>
       </>
     )

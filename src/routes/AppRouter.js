@@ -34,7 +34,7 @@ const AppRouter = ({ isAuthenticated }) => (
         {isAuthenticated ? <Nav /> : null}
         <Route path="/" exact component={Public} />
         <Route path="/login" component={Login} />
-        <Route path="/sign-up" component={Signup} />
+        <Route path="/signup" component={Signup} />
         <PrivateRoute path="/app" component={Main} />
         <PrivateRoute path="/matches" component={Matches} />
       </RouteWrapper>

@@ -9,7 +9,9 @@ export const theme = {
     mainDark: '#826194',
     secondary: '#807cb0',
     like: '#95d1c5',
-    dislike: '#9E676E'
+    dislike: '#9E676E',
+    facebook: '#445CAB',
+    google: '#DC4E41'
   },
   gradient: 'linear-gradient(to bottom, #fffcdc, #d9a7c7)',
   font: `'Source Sans Pro', Helvetica, Arial, sans-serif`,

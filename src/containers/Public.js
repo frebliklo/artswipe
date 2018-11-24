@@ -1,9 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter, Link, Redirect } from 'react-router-dom'
+// import posed, { PoseGroup } from 'react-pose'
 import styled from 'styled-components'
 
 import { theme } from '../constants'
+
+import LoginModal from '../components/LoginModal'
 
 const PublicContainer = styled.div`
   display: flex;
@@ -65,12 +68,26 @@ const SubTittle = styled.h2`
 `
 
 class Public extends Component {
-  render() {
-    const { isAuthenticated } = this.props
-    return isAuthenticated ? <Redirect to="/app" /> : (
+  state = {
+    loginVisible: false
+  }
+
+  componentDidMount() {
+    if(this.props.location.state && this.props.location.state.login) {
+      this.setState(() => ({ loginVisible: true }))
+    }
+  }
+  
+  renderPublic = () => (
+    <>
+      <LoginModal
+        visible={this.state.loginVisible}
+        dismiss={() => this.setState({ loginVisible: false })}
+      />
       <PublicContainer>
         <PublicNav>
           <NavLink to="/login">Login</NavLink>
+          <button onClick={() => this.setState({ loginVisible: !this.state.loginVisible })}>Test</button>
         </PublicNav>
         <HeaderContainer>
           <div>
@@ -79,11 +96,17 @@ class Public extends Component {
           </div>
         </HeaderContainer>
       </PublicContainer>
-    )
+    </>
+  )
+  
+  render() {
+    const { isAuthenticated } = this.props
+    console.log(this.props)
+    return isAuthenticated ? <Redirect to="/app" /> : this.renderPublic()
   }
 }
 
-const mapStateToProps = (state, props) => ({
+const mapStateToProps = state => ({
   isAuthenticated: !!state.auth.uid
 })
 
