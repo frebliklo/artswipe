@@ -31,12 +31,12 @@ const AppRouter = ({ isAuthenticated }) => (
     <GlobalStyle />
     <Router>
       <RouteWrapper>
-        {isAuthenticated ? <Nav /> : null}
         <Route path="/" exact component={Public} />
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
         <PrivateRoute path="/app" component={Main} />
         <PrivateRoute path="/matches" component={Matches} />
+        {isAuthenticated ? <Nav /> : null}
       </RouteWrapper>
     </Router>
   </Screen>

@@ -6,11 +6,17 @@ import styled from 'styled-components'
 
 import { ReactComponent as BackArrow } from '../assets/back-arrow.svg'
 import { ReactComponent as MenuIcon } from '../assets/menu.svg'
+import Overlay from './styled/Overlay'
 
 import { startLogout } from '../actions/auth'
 import { flushCulture } from '../actions/culture'
 
 import { theme } from '../constants'
+
+const Backdrop = posed(Overlay)({
+  enter: { opacity: 1 },
+  exit: { opacity: 0 }
+})
 
 const PosedNavContainer = posed.nav({
   enter: {
@@ -57,7 +63,7 @@ const NavContainer = styled(PosedNavContainer)`
   padding: 1.6rem;
   background: #FFFDED;
   z-index: 100;
-  box-shadow: ${props => props.open ? '1px 0 35px rgba(0,0,0,.35)' : '0 0 0 rgba(0,0,0,0)'};
+  box-shadow: 1px 0 35px rgba(0,0,0,.35);
   transition: box-shadow 200ms ease-in-out;
 `
 
@@ -144,28 +150,6 @@ class Nav extends Component {
   handleCloseNav = () => {
     this.setState({ isOpen: false })
   }
-
-  renderNavContainer = () => {
-    const { isOpen } = this.state
-    
-    return (
-      <NavContainer key="container" pose={isOpen ? 'open' : 'closed'} open={isOpen}>
-        <Section>
-          <BackButton onClick={this.handleCloseNav}>
-            <BackArrow width={20} height={20} />
-            <BackText>Close</BackText>
-          </BackButton>
-        </Section>
-        <Section>
-          <NavItem>Swipe</NavItem>
-          <NavItem>Matches</NavItem>
-        </Section>
-        <Section>
-          <NavItem onClick={this.handleLogout}>Sign out</NavItem>
-        </Section>
-      </NavContainer>
-    )
-  }
   
   render() {
     const { isOpen } = this.state
@@ -176,7 +160,24 @@ class Nav extends Component {
           <MenuIcon width={32} height={32} />
         </MenuButton>
         <PoseGroup>
-          {isOpen && this.renderNavContainer()}
+          {isOpen && [
+            <Backdrop key="navigationBackdrop" onClick={this.handleCloseNav} />,
+            <NavContainer key="navigationContainer">
+              <Section>
+                <BackButton onClick={this.handleCloseNav}>
+                  <BackArrow width={20} height={20} />
+                  <BackText>Close</BackText>
+                </BackButton>
+              </Section>
+              <Section>
+                <NavItem>Swipe</NavItem>
+                <NavItem>Matches</NavItem>
+              </Section>
+              <Section>
+                <NavItem onClick={this.handleLogout}>Sign out</NavItem>
+              </Section>
+            </NavContainer>
+          ]}
         </PoseGroup>
       </>
     )

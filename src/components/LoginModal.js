@@ -7,17 +7,9 @@ import { ReactComponent as Close } from '../assets/close.svg'
 
 import HelpText from './styled/HelpText'
 import IntroContainer from './styled/IntroContainer'
+import Overlay from './styled/Overlay'
 import TextLink from './styled/TextLink'
 import Title from './styled/Title'
-
-const Overlay = styled.div`
-  position: absolute;
-  background: rgba(0, 0, 0, 0.33);
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-`
 
 const Backdrop = posed(Overlay)({
   enter: { opacity: 1 },

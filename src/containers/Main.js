@@ -47,7 +47,7 @@ class Main extends Component {
 
   componentDidUpdate(prevProps) {
     if(prevProps.cultureItems.length < 3) {
-      this.props.getCulture().then(() => console.log('Got culture!'))
+      this.props.getCulture()
     }
 
     if(prevProps.activeItem !== this.props.activeItem) {

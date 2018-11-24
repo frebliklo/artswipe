@@ -96,7 +96,6 @@ class SwipeCard extends PureComponent {
 
   _onAnimationEnd = (pose, item) => {
     const { onAnimationEnd, sendChoice } = this.props
-    console.log(pose)
     if(pose === 'like') {
       onAnimationEnd()
       sendChoice(true, item)
@@ -106,10 +105,6 @@ class SwipeCard extends PureComponent {
     } else {
       return null
     }
-  }
-
-  changePose = pose => {
-    console.log('Change pose to:', pose)
   }
   
   render() {

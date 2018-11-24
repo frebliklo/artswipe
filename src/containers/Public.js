@@ -101,7 +101,6 @@ class Public extends Component {
   
   render() {
     const { isAuthenticated } = this.props
-    console.log(this.props)
     return isAuthenticated ? <Redirect to="/app" /> : this.renderPublic()
   }
 }
