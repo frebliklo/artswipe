@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import styled from 'styled-components'
 import axios from 'axios'
 
@@ -13,24 +14,11 @@ const Title = styled.h1`
 `
 
 class Matches extends Component {
-  state = {
-    matches: []
-  }
-  
-  componentDidMount() {
-    const url = `${API_BASE_URL}/match?user=${this.props.user}`
-
-    axios.get(url)
-      .then(res => {
-        this.setState(() => ({ matches: res.data.all_matches }))
-      })
-  }
-
   renderMatches = () => {
-    return this.state.matches.map(match => {
+    return this.props.allMatches.map(match => {
       return <Match
-        key={match}
-        name={match}
+        key={match.id}
+        name={match.user}
       />
     })
   }
@@ -45,4 +33,8 @@ class Matches extends Component {
   }
 }
 
-export default Matches
+const mapStateToProps = state => ({
+  allMatches: state.matches.allMatches
+})
+
+export default connect(mapStateToProps)(Matches)

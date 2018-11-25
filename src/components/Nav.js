@@ -150,6 +150,11 @@ class Nav extends Component {
   handleCloseNav = () => {
     this.setState({ isOpen: false })
   }
+
+  handleNavlinkClick = path => {
+    this.props.history.push(path)
+    this.handleCloseNav()
+  }
   
   render() {
     const { history } = this.props
@@ -171,8 +176,8 @@ class Nav extends Component {
                 </BackButton>
               </Section>
               <Section>
-                <NavItem onClick={() => history.push('/app')}>Swipe</NavItem>
-                <NavItem onClick={() => history.push('/matches')}>Matches</NavItem>
+                <NavItem onClick={() => this.handleNavlinkClick('/app')}>Swipe</NavItem>
+                <NavItem onClick={() => this.handleNavlinkClick('/matches')}>Matches</NavItem>
               </Section>
               <Section>
                 <NavItem onClick={this.handleLogout}>Sign out</NavItem>
