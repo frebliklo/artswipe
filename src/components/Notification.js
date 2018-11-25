@@ -1,14 +1,15 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import posed from 'react-pose'
+
 import { theme } from '../constants'
+
 import { ReactComponent as Chevron } from '../assets/chevron.svg'
 
 const containerProps = {
-  init: { scale: 0 },
-  show: { scale: 1 },
-  hide: { scale: 0 }
+  enter: { scale: 1 },
+  exit: { scale: 0 }
 }
 
 const Container = styled(posed.div(containerProps))`
@@ -51,18 +52,32 @@ const SubTitle = styled.h3`
   color: ${theme.color.secondary};
 `
 
-const Notification = ({ pose }) => {
-  return (
-    <Container pose={pose}>
-      <MatchLink to="/matches">
-        <TextContainer>
-          <Title>Du har et nyt match!</Title>
-          <SubTitle>Klik her for at se dine matches</SubTitle>
-        </TextContainer>
-        <Chevron width={24} height={24} />
-      </MatchLink>
-    </Container>
-  )
+class Notification extends Component {
+  state = {
+    dragging: false
+  }
+
+  handleClick = e => {
+    if(this.state.dragging) {
+      e.preventDefault()
+    }
+  } 
+  
+  render() {
+    const { onDrag } = this.props
+
+    return (
+      <Container onValueChange={{ y: onDrag }}>
+        <MatchLink to="/matches" onClick={this.handleClick}>
+          <TextContainer>
+            <Title>You have a new match!</Title>
+            <SubTitle>Click here to see your matches</SubTitle>
+          </TextContainer>
+          <Chevron width={24} height={24} />
+        </MatchLink>
+      </Container>
+    )
+  }
 }
 
 export default Notification

@@ -61,7 +61,7 @@ const NavContainer = styled(PosedNavContainer)`
   left: 0;
   min-width: 30rem;
   padding: 1.6rem;
-  background: #FFFDED;
+  background: #FFF;
   z-index: 100;
   box-shadow: 1px 0 35px rgba(0,0,0,.35);
   transition: box-shadow 200ms ease-in-out;
@@ -79,11 +79,11 @@ const NavItem = styled(PosedNavItem)`
   transition: background 150ms ease-in-out;
 
   &:hover {
-    background: rgba(0,0,0,.33);
+    background: rgba(0,0,0,.1);
   }
 
   &:focus {
-    background: rgba(0,0,0,.5);
+    background: rgba(0,0,0,.2);
   }
 `
 
@@ -152,6 +152,7 @@ class Nav extends Component {
   }
   
   render() {
+    const { history } = this.props
     const { isOpen } = this.state
 
     return (
@@ -170,8 +171,8 @@ class Nav extends Component {
                 </BackButton>
               </Section>
               <Section>
-                <NavItem>Swipe</NavItem>
-                <NavItem>Matches</NavItem>
+                <NavItem onClick={() => history.push('/app')}>Swipe</NavItem>
+                <NavItem onClick={() => history.push('/matches')}>Matches</NavItem>
               </Section>
               <Section>
                 <NavItem onClick={this.handleLogout}>Sign out</NavItem>

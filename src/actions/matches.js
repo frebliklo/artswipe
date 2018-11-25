@@ -6,10 +6,13 @@ import {
   GET_MATCHES_START,
   GET_MATCHES_ERROR,
   FETCH_MATCHES_START,
-  FETCH_MATCHES_ERROR
+  FETCH_MATCHES_ERROR,
+  UPDATE_MATCH_START,
+  UPDATE_MATCH_ERROR,
+  MARK_ALL_READ
 } from './types'
 
-import { getDbMatches, createDbMatch } from '../firebase/db'
+import { getDbMatches, createDbMatch, seenDbMatch } from '../firebase/db'
 
 import { API_BASE_URL } from '../constants'
 
@@ -79,11 +82,46 @@ export const fetchMatches = () => {
       return null
     })
 
+    const dbMatches = await getDbMatches(uid)
+
     try {
-      return getMatches()
+      dispatch(addMatches(dbMatches.allMatches, dbMatches.newMatches, dbMatches.prevMatches))
     }
     catch(err) {
       dispatch(fetchMatchesError(err))
     }
   }
 }
+
+export const updateMatchStart = () => ({
+  type: UPDATE_MATCH_START
+})
+
+export const updateMatchError = error => ({
+  type: UPDATE_MATCH_ERROR,
+  error
+})
+
+export const updateMatch = () => {
+  return async (dispatch, getState) => {
+    dispatch(updateMatchStart)
+
+    const { uid } = getState().auth
+    const { newMatches } = getState().matches
+
+    await newMatches.forEach(match => {
+      return seenDbMatch(uid, match.id)
+    })
+
+    try {
+      dispatch(markMatchesRead())
+    }
+    catch(err) {
+      dispatch(updateMatchError(err))
+    }
+  }
+}
+
+export const markMatchesRead = () => ({
+  type: MARK_ALL_READ
+})

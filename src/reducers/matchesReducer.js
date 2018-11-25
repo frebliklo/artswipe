@@ -1,6 +1,7 @@
 import {
   ADD_MATCHES,
-  GET_MATCHES_ERROR
+  GET_MATCHES_ERROR,
+  MARK_ALL_READ
 } from '../actions/types'
 
 const matchesReducerDefaultState = {
@@ -26,6 +27,13 @@ export default (state = matchesReducerDefaultState, action) => {
         newMatches: state.newMatches,
         prevMatches: state.prevMatches,
         error: action.error
+      }
+    case MARK_ALL_READ:
+      return {
+        allMatches: [...state.newMatches, ...state.allMatches],
+        newMatches: [],
+        prevMatches: state.prevMatches,
+        error: null
       }
     default:
       return state

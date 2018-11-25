@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import posed from 'react-pose'
+import posed, { PoseGroup } from 'react-pose'
 import styled from 'styled-components'
 
+import Notification from '../components/Notification'
 import SwipeCard from '../components/SwipeCard'
 
 import Container from '../components/styled/Container'
@@ -13,7 +14,7 @@ import { ReactComponent as ThumbUp } from '../assets/thumbs-up.svg'
 import { ReactComponent as ThumbDown } from '../assets/thumbs-down.svg'
 
 import { getCulture, sendChoice } from '../actions/culture'
-import { fetchMatches } from '../actions/matches'
+import { fetchMatches, updateMatch } from '../actions/matches'
 
 const ImageContainer = styled.div`
   width: 100%;
@@ -42,7 +43,8 @@ class Main extends Component {
 
     this.state = {
       activeItem: props.activeItem,
-      pose: 'init'
+      pose: 'init',
+      newMatches: props.newMatches
     }
   }
 
@@ -56,12 +58,22 @@ class Main extends Component {
         activeItem: this.props.activeItem,
         pose: 'init'
       }))
-      this.props.fetchMatches()
+    }
+    
+    if(prevProps.newMatches.length >= 1) {
+      this.props.updateMatch()
+    }
+
+    if(prevProps.newMatches !== this.props.newMatches) {
+      this.setState(() => ({
+        newMatches: this.props.newMatches
+      }))
     }
   }
 
   onAnimationEnd = () => {
     this.setState({ activeItem: null })
+    this.props.fetchMatches()
   }
 
   handleClick = pose => {
@@ -69,10 +81,13 @@ class Main extends Component {
   }
 
   render() {
-    const { activeItem, pose } = this.state
+    const { activeItem, pose, newMatches } = this.state
 
     return (
       <Container>
+        <PoseGroup>
+          {newMatches && newMatches.length >= 1 && <Notification key="pushnotification" />}
+        </PoseGroup>
         <ImageContainer>
           {activeItem && <SwipeCard item={activeItem} pose={pose} onAnimationEnd={this.onAnimationEnd} />}
         </ImageContainer>
@@ -92,13 +107,14 @@ class Main extends Component {
 const mapStateToProps = state => ({
   activeItem: state.culture.active,
   cultureItems: state.culture.all,
-  allMatches: state.matches.all
+  newMatches: state.matches.newMatches
 })
 
 const mapDispatchToProps = dispatch => ({
   getCulture: () => dispatch(getCulture()),
   sendChoice: (choice, culture) => dispatch(sendChoice(choice, culture)),
-  fetchMatches: () => dispatch(fetchMatches())
+  fetchMatches: () => dispatch(fetchMatches()),
+  updateMatch: () => dispatch(updateMatch())
 })
 
 export default withRouter(

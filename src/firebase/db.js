@@ -47,3 +47,9 @@ export const getDbMatches = async uid => {
   })
   return { allMatches, newMatches, prevMatches }
 }
+
+export const seenDbMatch = (uid, matchId) => {
+  if(uid && matchId) {
+    return db.ref(`users/${uid}/matches/${matchId}`).update({ seen: true })
+  }
+}
