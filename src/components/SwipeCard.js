@@ -119,13 +119,13 @@ class SwipeCard extends PureComponent {
         onDragEnd={this._handleDragEnd}
         onValueChange={{ x: this._onDrag }}
       >
-        <RedMask />
-        <GreenMask />
         <Image
           assetId={item.asset_id}
           title={item.title}
           thumb={item.thumb}
         />
+        <RedMask />
+        <GreenMask />
       </Card>
     )
   }

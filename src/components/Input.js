@@ -12,7 +12,7 @@ const Container = styled.div`
 
 const PosedPlaceholder = posed.label({
   empty: {
-    fontSize: '1.6rem',
+    fontSize: '16px',
     x: 0,
     y: 0,
     transition: {
@@ -21,7 +21,7 @@ const PosedPlaceholder = posed.label({
     }
   },
   value: {
-    fontSize: '1.2rem',
+    fontSize: '12px',
     x: -8,
     y: -30,
     transition: {

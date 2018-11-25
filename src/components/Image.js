@@ -1,7 +1,8 @@
 import React from 'react'
 import posed from 'react-pose'
 import styled from 'styled-components'
-import { theme } from '../constants'
+
+import { theme, API_BASE_URL } from '../constants'
 
 const PosedContainer = posed.div({
   enter: { scale: 1, opacity: 1 },
@@ -40,8 +41,8 @@ const Title = styled.h3`
 
 const Image = ({ assetId, title, thumb }) => (
   <Container key={assetId}>
-    <Title>{title ? title : 'Ingen titel!'}</Title>
-    <Img id={assetId} src={thumb} alt={title} />
+    <Title>{title}</Title>
+    <Img id={assetId} src={`${API_BASE_URL}/image?asset_id=${assetId}`} alt={title} />
   </Container>
 )
 
