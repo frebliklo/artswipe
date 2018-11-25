@@ -27,24 +27,30 @@ export const getCultureError = error => ({
 })
 
 export const getCulture = () => {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
     dispatch(getCultureStart())
 
     const uid = getState().auth.uid
 
-    return axios({
-      url: `${API_BASE_URL}/culture?user=${uid}&count=5`,
+    const res = await axios({
+      url: `${API_BASE_URL}/culture?user=${uid}&count=10`,
       method: 'get',
-      // headers: { 'Origin': `${API_BASE_URL}` }
     })
-      .then(res => {
-        dispatch(addCulture(res.data))
-        return res
-      })
-      .catch(err => {
-        dispatch(getCultureError(err))
-        return err
-      })
+
+    const culture = res.data.map(item => {
+      return {
+        asset_id: item.asset_id,
+        title: item.title,
+        thumb: `${API_BASE_URL}/image?asset_id=${item.asset_id}`
+      }
+    })
+
+    try {
+      dispatch(addCulture(culture))
+    }
+    catch (err) {
+      dispatch(getCultureError(err))
+    }
   }
 }
 
@@ -63,25 +69,23 @@ export const sendChoiceError = error => ({
 })
 
 export const sendChoice = (choice, culture) => {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
     dispatch(sendChoiceStart())
 
     const uid = getState().auth.uid
     const { asset_id } = culture
 
-    return axios({
+    await axios({
       url: `${API_BASE_URL}/choose?user=${uid}&asset_id=${asset_id}&choice=${choice}`,
       method: 'get',
-      // headers: { 'Origin': `${API_BASE_URL}` }
     })
-      .then(res => {
-        dispatch(removeCulture(culture))
-        return res
-      })
-      .catch(err => {
-        dispatch(sendChoiceError(err))
-        return err
-      })
+
+    try {
+      dispatch(removeCulture(culture))
+    }
+    catch (err) {
+      dispatch(sendChoiceError(err))
+    }
   }
 }
 

@@ -13,6 +13,7 @@ import { ReactComponent as ThumbUp } from '../assets/thumbs-up.svg'
 import { ReactComponent as ThumbDown } from '../assets/thumbs-down.svg'
 
 import { getCulture, sendChoice } from '../actions/culture'
+import { fetchMatches } from '../actions/matches'
 
 const ImageContainer = styled.div`
   width: 100%;
@@ -46,7 +47,7 @@ class Main extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if(prevProps.cultureItems.length < 3) {
+    if(prevProps.cultureItems.length < 1) {
       this.props.getCulture()
     }
 
@@ -55,6 +56,7 @@ class Main extends Component {
         activeItem: this.props.activeItem,
         pose: 'init'
       }))
+      this.props.fetchMatches()
     }
   }
 
@@ -89,12 +91,14 @@ class Main extends Component {
 
 const mapStateToProps = state => ({
   activeItem: state.culture.active,
-  cultureItems: state.culture.all
+  cultureItems: state.culture.all,
+  allMatches: state.matches.all
 })
 
 const mapDispatchToProps = dispatch => ({
   getCulture: () => dispatch(getCulture()),
-  sendChoice: (choice, culture) => dispatch(sendChoice(choice, culture))
+  sendChoice: (choice, culture) => dispatch(sendChoice(choice, culture)),
+  fetchMatches: () => dispatch(fetchMatches())
 })
 
 export default withRouter(

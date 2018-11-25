@@ -8,6 +8,42 @@ export const createUser = user => {
 }
 
 export const getUser = async uid => {
-  const snapshot = await db.ref('users/' + uid).once('value');
-  return snapshot.val();
+  const snapshot = await db.ref('users/' + uid).once('value')
+  return snapshot.val()
+}
+
+export const createDbMatch = async (uid, match) => {
+  const matchPartial = {
+    seen: false,
+    read: false,
+    createdAt: Date.now()
+  }
+  await db.ref(`users/${match}/matches`).push({ user: uid, ...matchPartial })
+  const ref = await db.ref(`users/${uid}/matches`).push({ user: match, ...matchPartial })
+  console.log(ref)
+  return ref
+}
+
+export const addDbMatch = (uid, match) => {
+  return db.ref(`users/${uid}/matches`).push(match)
+}
+
+export const getDbMatches = async uid => {
+  const snapshot = await db.ref(`users/${uid}/matches`).once('value')
+  const allMatches = []
+  const newMatches = []
+  const prevMatches = []
+  snapshot.forEach(childSnapshot => {
+    const item = {
+      id: childSnapshot.key,
+      ...childSnapshot.val()
+    }
+    allMatches.push(item)
+    if(childSnapshot.val().seen !== true) {
+      newMatches.push(item)
+    } else {
+      prevMatches.push(item)
+    }
+  })
+  return { allMatches, newMatches, prevMatches }
 }
