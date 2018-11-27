@@ -53,3 +53,8 @@ export const seenDbMatch = (uid, matchId) => {
     return db.ref(`users/${uid}/matches/${matchId}`).update({ seen: true })
   }
 }
+
+export const getMatchUsers = async ({ user }) => {
+  const snapshot = await db.ref('users/' + user).once('value')
+  return snapshot.val()
+}

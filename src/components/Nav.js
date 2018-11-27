@@ -47,6 +47,7 @@ const MenuButton = styled.button`
   background: none;
   border: none;
   outline: none;
+  cursor: pointer;
 `
 
 const NavContainer = styled(PosedNavContainer)`
@@ -77,6 +78,7 @@ const NavItem = styled(PosedNavItem)`
   border-radius: 4px;
   outline: none;
   transition: background 150ms ease-in-out;
+  cursor: pointer;
 
   &:hover {
     background: rgba(0,0,0,.1);
@@ -108,6 +110,7 @@ const BackButton = styled.button`
   outline: none;
   margin-bottom: .8rem;
   padding: .8rem 1.6rem .8rem .8rem;
+  cursor: pointer;
   transition: background 150ms ease-in-out;
 
   & svg > path {
@@ -157,7 +160,6 @@ class Nav extends Component {
   }
   
   render() {
-    const { history } = this.props
     const { isOpen } = this.state
 
     return (

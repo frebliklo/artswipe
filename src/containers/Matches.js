@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
-import axios from 'axios'
 
-import { theme, API_BASE_URL } from '../constants'
+import { theme } from '../constants'
 import Match from '../components/Match'
 import Container from '../components/styled/Container'
+
+import { getMatchUsers } from '../firebase/db'
 
 const Title = styled.h1`
   font-size: 2.4rem;
@@ -14,20 +15,35 @@ const Title = styled.h1`
 `
 
 class Matches extends Component {
-  renderMatches = () => {
-    return this.props.allMatches.map(match => {
-      return <Match
-        key={match.id}
-        name={match.user}
-      />
+  state = {
+    loading: true,
+    matches: []
+  }
+
+  async componentDidMount() {
+    const matches = []
+    await this.props.allMatches.map(async user => {
+      const match = await getMatchUsers(user)
+      matches.push({
+        avatar: match.avatar,
+        name: `${match.firstName} ${match.lastName}`,
+        createdAt: user.createdAt
+      })
+      this.setState(() => ({ matches }))
     })
+  }
+
+  renderMatches = () => {
+    const { matches } = this.state
+    return matches.map(match => <Match key={match.lastName} match={match} />)
   }
   
   render() {
+    const { matches } = this.state
     return (
-      <Container padding="3.2rem 1.6rem">
+      <Container justify="flex-start" padding="3.2rem 1.6rem">
         <Title>Matches</Title>
-        {this.renderMatches()}
+        {matches && this.renderMatches()}
       </Container>
     )
   }

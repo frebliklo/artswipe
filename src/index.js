@@ -39,7 +39,7 @@ ReactDOM.render(
 firebase.auth().onAuthStateChanged(async auth => {
   if(auth) {
     const user = await getUser(auth.uid)
-    store.dispatch(login(user))
+    await store.dispatch(login(user))
     await store.dispatch(getCulture())
     await store.dispatch(getMatches())
     renderApp()

@@ -13,7 +13,7 @@ export const theme = {
     facebook: '#445CAB',
     google: '#DC4E41'
   },
-  gradient: 'linear-gradient(to bottom, #fffcdc, #d9a7c7)',
+  gradient: 'linear-gradient(to bottom, rgba(255,255,255,1), rgba(255,252,220,.5))',
   font: `'Source Sans Pro', Helvetica, Arial, sans-serif`,
 }
 

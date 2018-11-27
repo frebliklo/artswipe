@@ -19,6 +19,8 @@ const Container = styled(posed.div(containerProps))`
   right: auto;
   bottom: auto;
   left: auto;
+  width: 100%;
+  max-width: 40rem;
   justify-content: center;
   align-items: center;
   background: ${theme.color.white};
