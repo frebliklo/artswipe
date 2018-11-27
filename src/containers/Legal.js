@@ -10,7 +10,7 @@ import { theme } from '../constants'
 const legalText = `
 # Privacy policy
 
-This privacy policy explains how LazyTourist (“we” or “us”) processes your personal data in connection with the ArtSwipe prototype app.
+This privacy policy explains how ArtSwipe (“we” or “us”) processes your personal data in connection with the ArtSwipe prototype app.
 
 ## 1 - Introduction
 
