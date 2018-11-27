@@ -5,6 +5,7 @@ import styled from 'styled-components'
 
 import PrivateRoute from './PrivateRoute'
 
+import Legal from '../containers/Legal'
 import Login from '../containers/Login'
 import Main from '../containers/Main'
 import Public from '../containers/Public'
@@ -34,6 +35,7 @@ const AppRouter = ({ isAuthenticated }) => (
         <Route path="/" exact component={Public} />
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
+        <Route path="/privacy" component={Legal} />
         <PrivateRoute path="/app" component={Main} />
         <PrivateRoute path="/matches" component={Matches} />
         {isAuthenticated ? <Nav /> : null}
