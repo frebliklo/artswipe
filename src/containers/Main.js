@@ -49,7 +49,7 @@ class Main extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if(prevProps.cultureItems.length < 1) {
+    if(prevProps.cultureItems.length < 2) {
       this.props.getCulture()
     }
 

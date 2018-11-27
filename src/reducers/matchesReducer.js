@@ -30,7 +30,7 @@ export default (state = matchesReducerDefaultState, action) => {
       }
     case MARK_ALL_READ:
       return {
-        allMatches: [...state.newMatches, ...state.allMatches],
+        allMatches: state.allMatches,
         newMatches: [],
         prevMatches: state.prevMatches,
         error: null

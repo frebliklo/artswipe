@@ -25,7 +25,7 @@ class Matches extends Component {
     await this.props.allMatches.map(async user => {
       const match = await getMatchUsers(user)
       matches.push({
-        avatar: match.avatar,
+        avatar: match.avatar ? match.avatar : null,
         name: `${match.firstName} ${match.lastName}`,
         createdAt: user.createdAt
       })
