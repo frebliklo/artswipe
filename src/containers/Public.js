@@ -6,8 +6,7 @@ import styled from 'styled-components'
 import { theme } from '../constants'
 
 import LoginModal from '../components/LoginModal'
-
-import Button from '../components/styled/Button'
+import PublicNav from '../components/PublicNav'
 
 const PublicContainer = styled.div`
   display: flex;
@@ -19,33 +18,6 @@ const PublicContainer = styled.div`
   height: 100%;
   max-width: 80rem;
   padding: 1.6rem;
-`
-const PublicNav = styled.nav`
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  width: 100%;
-`
-
-const NavLink = styled(Link)`
-  font-size: 1.4rem;
-  line-height: 1.5;
-  color: ${theme.color.main};
-  padding: .8rem 1.2rem;
-  margin-right: 1.2rem;
-  background: none;
-  border: none;
-  border-radius: 4px;
-  outline: none;
-  transition: background 150ms ease-in-out;
-
-  &:hover {
-    background: ${theme.color.secondary + '33'};
-  }
-
-  &:focus {
-    background: ${theme.color.secondary + '77'};
-  }
 `
 
 const HeaderContainer = styled.header`
@@ -87,10 +59,7 @@ class Public extends Component {
         dismiss={() => this.setState({ loginVisible: false })}
       />
       <PublicContainer>
-        <PublicNav>
-          <NavLink to="/signup">Create account</NavLink>
-          <Button small onClick={() => this.setState({ loginVisible: !this.state.loginVisible })}>Sign in</Button>
-        </PublicNav>
+        <PublicNav onClick={() => this.setState({ loginVisible: true })} />
         <HeaderContainer>
           <div>
             <Title>ArtSwipe</Title>
