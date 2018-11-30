@@ -40,7 +40,7 @@ const NavLink = styled(Link)`
 
 const PublicNav = ({ onClick }) => {
   const mq = window.matchMedia('(max-width: 600px)')
-  console.log(mq)
+
   return (
     <Container>
       <NavLink to="/signup">Create account</NavLink>

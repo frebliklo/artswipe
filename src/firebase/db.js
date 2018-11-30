@@ -20,7 +20,6 @@ export const createDbMatch = async (uid, match) => {
   }
   await db.ref(`users/${match}/matches`).push({ user: uid, ...matchPartial })
   const ref = await db.ref(`users/${uid}/matches`).push({ user: match, ...matchPartial })
-  console.log(ref)
   return ref
 }
 
