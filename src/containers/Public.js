@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { withRouter, Link, Redirect } from 'react-router-dom'
+import { withRouter, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
+import { darken } from 'polished'
 
 import { theme } from '../constants'
 
@@ -38,7 +39,7 @@ const Title = styled.h1`
 const SubTittle = styled.h2`
   font-size: 2.4rem;
   line-height: 1.5;
-  color: ${theme.color.mainDark};
+  color: ${darken(.05, theme.color.main)};
 `
 
 class Public extends Component {

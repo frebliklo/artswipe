@@ -24,18 +24,29 @@ class Matches extends Component {
     const matches = []
     await this.props.allMatches.map(async user => {
       const match = await getMatchUsers(user)
-      matches.push({
-        avatar: match.avatar ? match.avatar : null,
-        name: `${match.firstName} ${match.lastName}`,
+      let userAvatar, username
+      if(match && match.avatar) {
+        userAvatar = match.avatar
+      } else {
+        userAvatar = null
+      }
+      if(match && match.firstName && match.lastName) {
+        username = `${match.firstName} ${match.lastName}`
+      } else {
+        username = 'No name'
+      }
+      await matches.push({
+        avatar: userAvatar,
+        name: username,
         createdAt: user.createdAt
       })
-      this.setState(() => ({ matches }))
+      await this.setState(() => ({ matches }))
     })
   }
 
   renderMatches = () => {
     const { matches } = this.state
-    return matches.map(match => <Match key={match.lastName} match={match} />)
+    return matches.map(match => <Match key={match.user} match={match} />)
   }
   
   render() {

@@ -32,6 +32,10 @@ const NavLink = styled(Link)`
   &:focus {
     background: ${theme.color.secondary + '77'};
   }
+
+  @media (max-width: 600px) {
+    margin-right: .8rem;
+  }
 `
 
 const PublicNav = ({ onClick }) => {
